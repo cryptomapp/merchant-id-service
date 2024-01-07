@@ -52,6 +52,7 @@ Send a POST request to `/upload` with `multipart/form-data` containing the merch
 ### Endpoints
 
 - `POST /upload`: For uploading merchant data and images.
+- `POST /fundNode`: For topping up the Irys node.
 
 ### Request & Response Formats
 
