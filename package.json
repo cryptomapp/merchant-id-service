@@ -10,7 +10,10 @@
   },
   "dependencies": {
     "@irys/sdk": "^0.1.1",
-    "@metaplex/js": "^4.12.0",
+    "@metaplex-foundation/js": "^0.20.1",
+    "@metaplex-foundation/mpl-token-metadata": "^3.1.2",
+    "@metaplex-foundation/umi": "^0.8.10",
+    "@metaplex-foundation/umi-bundle-defaults": "^0.8.10",
     "@solana/web3.js": "^1.88.0",
     "arweave": "^1.14.4",
     "body-parser": "^1.20.2",
