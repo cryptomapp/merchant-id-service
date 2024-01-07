@@ -8,7 +8,7 @@ const app = express();
 app.use(bodyParser.json());
 
 app.use("/fundNode", fundNodeRouter);
-app.use("/uploadFile", uploadFileRouter);
+app.use("/upload", uploadFileRouter);
 
 const PORT = process.env.PORT || 3000;
 

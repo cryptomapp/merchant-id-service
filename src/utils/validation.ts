@@ -1,41 +1,28 @@
 import { MerchantData } from "../models/merchant";
+import moment from "moment-timezone";
+import { parsePhoneNumberFromString } from "libphonenumber-js";
 
 const isValidAddress = (address: string): boolean => {
   return address.trim().length > 0;
 };
 
-export const isValidMerchantData = (data: MerchantData): boolean => {
-  // Validate name, street, number, postcode, country (not empty)
-  if (
-    !isValidAddress(data.name) ||
-    !isValidAddress(data.street) ||
-    !isValidAddress(data.number) ||
-    !isValidAddress(data.postcode) ||
-    !isValidAddress(data.country)
-  ) {
-    console.log("Invalid address-related fields.");
-    return false;
-  }
+const isValidLatitude = (latitude: number): boolean => {
+  return typeof latitude === "number" && latitude >= -90 && latitude <= 90;
+};
 
-  // Validate latitude and longitude (basic checks)
-  if (
-    typeof data.latitude !== "number" ||
-    data.latitude < -90 ||
-    data.latitude > 90 ||
-    typeof data.longitude !== "number" ||
-    data.longitude < -180 ||
-    data.longitude > 180
-  ) {
-    console.log("Invalid latitude and/or longitude.");
-    return false;
-  }
+const isValidLongitude = (longitude: number): boolean => {
+  return typeof longitude === "number" && longitude >= -180 && longitude <= 180;
+};
 
-  if (!isValidAddress(data.city) || !isValidAddress(data.phoneNumber)) {
-    console.log("Invalid city or phone number.");
-    return false;
-  }
+const isValidOpeningHourFormat = (hours: string): boolean => {
+  // Assuming format like "9am-5pm" or "Closed"
+  const hoursRegex = /^([1-9]|1[0-2])(am|pm)-([1-9]|1[0-2])(am|pm)$|^Closed$/;
+  return hoursRegex.test(hours.trim());
+};
 
-  // Validate openingHours (ensure every day of the week is covered)
+const hasValidOpeningHours = (openingHours: {
+  [key: string]: string;
+}): boolean => {
   const daysOfWeek = [
     "Monday",
     "Tuesday",
@@ -45,19 +32,42 @@ export const isValidMerchantData = (data: MerchantData): boolean => {
     "Saturday",
     "Sunday",
   ];
-  for (let day of daysOfWeek) {
-    if (!data.openingHours[day]) {
-      console.log(`Missing opening hours for ${day}.`);
-      return false;
-    }
-  }
+  return daysOfWeek.every((day) => {
+    const hours = openingHours[day] || "";
+    return hours && isValidOpeningHourFormat(hours);
+  });
+};
 
-  // Validate description (up to 300 characters)
-  if (typeof data.description !== "string" || data.description.length > 300) {
-    console.log("Invalid description.");
+const isValidTimezone = (timezone: string): boolean => {
+  return moment.tz.zone(timezone) ? true : false; // Check if the timezone is known to moment-timezone
+};
+
+const isValidPhoneNumber = (phoneNumber: string): boolean => {
+  const phone = parsePhoneNumberFromString(phoneNumber);
+  return phone ? phone.isValid() : false;
+};
+
+const isValidDescription = (description: string): boolean => {
+  const trimmedDescription = description.trim();
+  return trimmedDescription.length >= 50 && trimmedDescription.length <= 500;
+};
+
+export const isValidMerchantData = (data: MerchantData): boolean => {
+  if (
+    !isValidAddress(data.name) ||
+    !isValidAddress(data.street) ||
+    !isValidAddress(data.number) ||
+    !isValidAddress(data.postcode) ||
+    !isValidAddress(data.country) ||
+    !isValidAddress(data.city) ||
+    !isValidPhoneNumber(data.phoneNumber) ||
+    !isValidLatitude(data.latitude) ||
+    !isValidLongitude(data.longitude) ||
+    !hasValidOpeningHours(data.openingHours) ||
+    !isValidDescription(data.description) ||
+    !isValidTimezone(data.timezone)
+  ) {
     return false;
   }
-
-  // If all validations pass
   return true;
 };
