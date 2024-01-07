@@ -1,4 +1,4 @@
-interface MerchantData {
+export interface MerchantData {
   name: string;
   street: string;
   number: string;
@@ -10,8 +10,9 @@ interface MerchantData {
   city: string;
   phoneNumber: string;
   openingHours: { [key: string]: string };
+  timezone: string;
 }
 
-interface MerchantMetadata extends MerchantData {
+export interface MerchantMetadata extends MerchantData {
   imageUrl: string;
 }

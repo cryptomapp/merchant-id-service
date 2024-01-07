@@ -1,3 +1,5 @@
+import { MerchantData } from "../models/merchant";
+
 const isValidAddress = (address: string): boolean => {
   return address.trim().length > 0;
 };

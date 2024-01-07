@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/app.js"
+    "start": "node dist/app.js",
+    "test": "jest"
   },
   "dependencies": {
     "@irys/sdk": "^0.1.1",
