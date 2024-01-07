@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/app.js"
+  },
   "dependencies": {
     "@irys/sdk": "^0.1.1",
     "@metaplex/js": "^4.12.0",
