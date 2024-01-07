@@ -1,4 +1,3 @@
-// src/routes/uploadFile.ts
 import express from "express";
 import { getIrys } from "../irys/irysService";
 import fs from "fs";

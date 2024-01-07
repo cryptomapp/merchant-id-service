@@ -13,6 +13,20 @@ export interface MerchantData {
   timezone: string;
 }
 
-export interface MerchantMetadata extends MerchantData {
-  imageUrl: string;
+export interface MerchantMetadata {
+  name: string;
+  symbol: string;
+  image: string;
+  attributes: Array<{
+    trait_type: string;
+    value: string;
+  }>;
+  properties: {
+    files: Array<{
+      uri: string;
+      type: string;
+      cdn?: boolean;
+    }>;
+    category: string;
+  };
 }
