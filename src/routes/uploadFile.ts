@@ -4,6 +4,7 @@ import fs from "fs";
 import multer from "multer";
 import path from "path";
 import { isValidMerchantData } from "../utils/validation";
+import { generateImage } from "../images/imageGenerator";
 import { MerchantData } from "../models/merchant";
 import { prepareMetadata } from "../utils/prepareMetadata";
 import mintNFT from "../utils/mintNFT";
@@ -47,7 +48,11 @@ router.post("/", upload.single("image"), async (req, res) => {
 
     // Prepare and upload metadata with merchant data and image URL
     const id = 1; // Hardcoded id for now - TODO: get id from Solana Program
-    const metadata = prepareMetadata(merchantData, imageUrl, id);
+
+    // Generate the main image for the NFT
+    const generatedImageUri = await generateImage(id); // Implement generateImage to return the image URL
+
+    const metadata = prepareMetadata(merchantData, generatedImageUri, id);
     const metadataReceipt = await irys.upload(JSON.stringify(metadata)); // receipt object
 
     // Ensure you extract the correct identifier from the receipt object.
