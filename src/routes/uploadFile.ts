@@ -4,7 +4,9 @@ import fs from "fs";
 import multer from "multer";
 import path from "path";
 import { isValidMerchantData } from "../utils/validation";
-import { MerchantData, MerchantMetadata } from "../models/merchant";
+import { MerchantData } from "../models/merchant";
+import { prepareMetadata } from "../utils/prepareMetadata";
+import mintNFT from "../utils/mintNFT";
 
 const router = express.Router();
 
@@ -14,7 +16,6 @@ const storage = multer.diskStorage({
     cb(null, "uploads/");
   },
   filename: function (req, file, cb) {
-    // Use Date.now() to name the file uniquely
     cb(null, `${Date.now()}${path.extname(file.originalname)}`);
   },
 });
@@ -44,29 +45,40 @@ router.post("/", upload.single("image"), async (req, res) => {
     const imageReceipt = await irys.upload(imageData);
     const imageUrl = `https://gateway.irys.xyz/${imageReceipt.id}`;
 
-    // Combine image URL with merchant data for full metadata
-    const metadata: MerchantMetadata = { ...merchantData, imageUrl };
-    const metadataReceipt = await irys.upload(JSON.stringify(metadata));
+    // Prepare and upload metadata with merchant data and image URL
+    const id = 1; // Hardcoded id for now - TODO: get id from Solana Program
+    const metadata = prepareMetadata(merchantData, imageUrl, id);
+    const metadataReceipt = await irys.upload(JSON.stringify(metadata)); // receipt object
+
+    // Ensure you extract the correct identifier from the receipt object.
+    // Assuming it's 'id' here but verify this with your implementation or documentation.
+    const metadataId = metadataReceipt.id;
+    const metadataUri = `https://gateway.irys.xyz/${metadataId}`;
 
     // Delete the image from the server after upload
     fs.unlinkSync(imageFile.path);
 
+    // Mint NFT with the metadata URI
+    await mintNFT(metadataUri);
+
     res.status(200).json({
-      message: "File and metadata uploaded successfully",
+      message: "File, metadata uploaded and NFT minted successfully",
       imageDataId: imageReceipt.id,
-      metadataId: metadataReceipt.id,
+      metadataUri: metadataUri,
+      merchantId: id, // Including the merchant id in the response
     });
   } catch (error) {
-    console.error("Error during file upload: ", error);
+    console.error("Error during file upload or minting: ", error);
     // Clean up any residual files in case of an error
     if (req.file) {
       fs.unlinkSync(req.file.path);
     }
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Error uploading file or metadata" });
-    }
+    res.status(500).json({
+      error:
+        error instanceof Error
+          ? error.message
+          : "Error uploading file or metadata or minting NFT",
+    });
   }
 });
 
