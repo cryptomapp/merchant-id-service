@@ -1,10 +1,11 @@
+import { generateImage } from "../images/imageGenerator";
 import { MerchantData, MerchantMetadata } from "../models/merchant";
 
-export function prepareMetadata(
+export async function prepareMetadata(
   merchantData: MerchantData,
   imageUrl: string,
   id: number
-): MerchantMetadata {
+): Promise<MerchantMetadata> {
   const attributes = Object.entries(merchantData).map(([key, value]) => {
     if (typeof value === "object" && value !== null) {
       value = JSON.stringify(value);
@@ -12,10 +13,12 @@ export function prepareMetadata(
     return { trait_type: key, value: String(value) };
   });
 
+  const nftImageUrl = await generateImage(id); // auto-gen logo with id
+
   const metadata: MerchantMetadata = {
     name: `MerchantID #${id}`,
     symbol: "MAP_ID",
-    image: imageUrl, // TODO: auto-gen with logo
+    image: nftImageUrl,
     attributes: attributes,
     properties: {
       files: [

@@ -47,12 +47,9 @@ router.post("/", upload.single("image"), async (req, res) => {
     const imageUrl = `https://gateway.irys.xyz/${imageReceipt.id}`;
 
     // Prepare and upload metadata with merchant data and image URL
-    const id = 1; // Hardcoded id for now - TODO: get id from Solana Program
+    const id = 2; // Hardcoded id for now - TODO: get id from Solana Program
 
-    // Generate the main image for the NFT
-    const generatedImageUri = await generateImage(id); // Implement generateImage to return the image URL
-
-    const metadata = prepareMetadata(merchantData, generatedImageUri, id);
+    const metadata = await prepareMetadata(merchantData, imageUrl, id);
     const metadataReceipt = await irys.upload(JSON.stringify(metadata)); // receipt object
 
     // Ensure you extract the correct identifier from the receipt object.
