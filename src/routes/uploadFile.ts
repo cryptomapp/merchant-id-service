@@ -4,7 +4,6 @@ import fs from "fs";
 import multer from "multer";
 import path from "path";
 import { isValidMerchantData } from "../utils/validation";
-import { generateImage } from "../images/imageGenerator";
 import { MerchantData } from "../models/merchant";
 import { prepareMetadata } from "../utils/prepareMetadata";
 import mintNFT from "../utils/mintNFT";
@@ -61,7 +60,7 @@ router.post("/", upload.single("image"), async (req, res) => {
     fs.unlinkSync(imageFile.path);
 
     // Mint NFT with the metadata URI
-    await mintNFT(metadataUri);
+    await mintNFT(metadataUri, id);
 
     res.status(200).json({
       message: "File, metadata uploaded and NFT minted successfully",

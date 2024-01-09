@@ -12,7 +12,7 @@ import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 import { config } from "../config"; // Importing config
 import bs58 from "bs58"; // Base58 for decoding
 
-async function mintNFT(metadataUri: string): Promise<any> {
+async function mintNFT(metadataUri: string, id: number): Promise<any> {
   const umi = createUmi(config.solanaProviderUrl);
 
   // Decode the Base58 private key
@@ -27,7 +27,7 @@ async function mintNFT(metadataUri: string): Promise<any> {
   await createV1(umi, {
     mint,
     authority: myKeypairSigner,
-    name: "MerchantID #1", // TODO: Handle fetching id from Solana program
+    name: `MerchantID #${id}`,
     symbol: "MAP_ID",
     uri: metadataUri,
     sellerFeeBasisPoints: percentAmount(25),
