@@ -3,8 +3,11 @@ import bodyParser from "body-parser";
 import fundNodeRouter from "./routes/fundNode";
 import uploadFileRouter from "./routes/uploadFile";
 import deployBubblegumTreeRouter from "./routes/deployBubblegumTree";
+import { connectToMongoDB } from "./config/mongoConnections";
 
 const app = express();
+
+connectToMongoDB();
 
 app.use(bodyParser.json());
 

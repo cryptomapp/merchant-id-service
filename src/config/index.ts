@@ -5,4 +5,5 @@ export const config = {
   irysUrl: "https://devnet.irys.xyz",
   solanaProviderUrl: "https://api.devnet.solana.com",
   solPrivateKey: process.env.MERCHANT_ID_ISSUER_DEV || "",
+  mongoUri: process.env.MONGO_URI || "",
 };

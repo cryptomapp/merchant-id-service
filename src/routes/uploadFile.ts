@@ -4,7 +4,7 @@ import fs from "fs";
 import multer from "multer";
 import path from "path";
 import { isValidMerchantData } from "../utils/validation";
-import { MerchantData } from "../models/merchant";
+import { Merchant, MerchantData } from "../models/merchant";
 import { prepareMetadata } from "../utils/prepareMetadata";
 import mintNFT from "../utils/mintNFT";
 
@@ -63,8 +63,17 @@ router.post("/", upload.single("image"), async (req, res) => {
     // Mint NFT with the metadata URI
     await mintNFT(metadataUri, id, merkleTreeAddress, merchantData.owner);
 
+    // Create a new merchant document from the provided data and save it to MongoDB
+    const newMerchant = new Merchant({
+      ...merchantData,
+      image: imageUrl,
+    });
+
+    await newMerchant.save();
+
     res.status(200).json({
-      message: "File, metadata uploaded and NFT minted successfully",
+      message:
+        "File, metadata uploaded, NFT minted, and merchant data saved successfully",
       imageDataId: imageReceipt.id,
       metadataUri: metadataUri,
       merchantId: id, // Including the merchant id in the response
