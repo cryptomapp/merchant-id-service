@@ -1,38 +1,51 @@
 import {
-  createV1,
-  TokenStandard,
-} from "@metaplex-foundation/mpl-token-metadata";
-import {
-  createSignerFromKeypair,
   generateSigner,
   keypairIdentity,
-  percentAmount,
+  none,
+  publicKey,
 } from "@metaplex-foundation/umi";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 import { config } from "../config"; // Importing config
 import bs58 from "bs58"; // Base58 for decoding
+import { mintV1 } from "@metaplex-foundation/mpl-bubblegum";
 
-async function mintNFT(metadataUri: string, id: number): Promise<any> {
+async function mintNFT(
+  metadataUri: string,
+  id: number,
+  merkleTreeAddress: string,
+  leafOwnerPublicKeyStr: string
+): Promise<any> {
   const umi = createUmi(config.solanaProviderUrl);
 
-  // Decode the Base58 private key
-  const secretKeyUint8Array = bs58.decode(config.solPrivateKey);
+  // Decode the Base58 private key for the creator (your wallet)
+  const creatorSecretKeyUint8Array = bs58.decode(config.solPrivateKey);
+  const creatorSigner = umi.eddsa.createKeypairFromSecretKey(
+    creatorSecretKeyUint8Array
+  );
+  umi.use(keypairIdentity(creatorSigner));
 
-  // Create Keypair and Signer from secret key
-  const myKeypair = umi.eddsa.createKeypairFromSecretKey(secretKeyUint8Array);
-  const myKeypairSigner = createSignerFromKeypair(umi, myKeypair);
-  umi.use(keypairIdentity(myKeypairSigner));
+  // Convert the Merkle Tree address from string to PublicKey
+  const merkleTreePublicKey = publicKey(merkleTreeAddress);
 
-  const mint = generateSigner(umi);
-  await createV1(umi, {
-    mint,
-    authority: myKeypairSigner,
-    name: `MerchantID #${id}`,
-    symbol: "MAP_ID",
-    uri: metadataUri,
-    sellerFeeBasisPoints: percentAmount(25),
-    tokenStandard: TokenStandard.NonFungible,
-  }).sendAndConfirm(umi);
+  // Convert the leaf owner's public key from string to PublicKey
+  const leafOwnerPublicKey = publicKey(leafOwnerPublicKeyStr);
+
+  // Mint the cNFT for the specified leaf owner
+  const { signature } = await mintV1(umi, {
+    leafOwner: leafOwnerPublicKey,
+    merkleTree: merkleTreePublicKey,
+    metadata: {
+      name: `MerchantID #${id}`,
+      uri: metadataUri,
+      sellerFeeBasisPoints: 10000,
+      collection: none(),
+      creators: [
+        { address: creatorSigner.publicKey, verified: true, share: 100 },
+      ],
+    },
+  }).sendAndConfirm(umi, { confirm: { commitment: "confirmed" } });
+
+  return signature;
 }
 
 export default mintNFT;

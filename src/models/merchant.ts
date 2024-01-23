@@ -1,4 +1,5 @@
 export interface MerchantData {
+  owner: string;
   name: string;
   street: string;
   number: string;
