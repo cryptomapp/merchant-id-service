@@ -1,15 +1,10 @@
-import {
-  generateSigner,
-  keypairIdentity,
-  none,
-  publicKey,
-} from "@metaplex-foundation/umi";
+import { keypairIdentity, none, publicKey } from "@metaplex-foundation/umi";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
-import { config } from "../config"; // Importing config
-import bs58 from "bs58"; // Base58 for decoding
+import { config } from "../config";
+import bs58 from "bs58";
 import { mintV1 } from "@metaplex-foundation/mpl-bubblegum";
 
-async function mintNFT(
+export async function mintNFT(
   metadataUri: string,
   id: number,
   merkleTreeAddress: string,
@@ -47,5 +42,3 @@ async function mintNFT(
 
   return signature;
 }
-
-export default mintNFT;

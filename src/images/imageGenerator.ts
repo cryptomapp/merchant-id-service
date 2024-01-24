@@ -1,5 +1,5 @@
 import Jimp from "jimp";
-import { getIrys } from "../irys/irysService";
+import { getIrys } from "../services/irysService";
 
 const colors = [
   "#fbf8cc",

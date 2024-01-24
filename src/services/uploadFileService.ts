@@ -1,0 +1,46 @@
+import fs from "fs";
+import { getIrys } from "./irysService";
+import { isValidMerchantData } from "../utils/validation";
+import { Merchant, MerchantData } from "../models/merchant";
+import { prepareMetadata } from "../utils/prepareMetadata";
+import { mintNFT } from "./nftService";
+
+export const uploadFileService = async (
+  merchantData: MerchantData,
+  imageFile: Express.Multer.File
+) => {
+  if (!isValidMerchantData(merchantData)) {
+    throw new Error("Invalid merchant data provided.");
+  }
+  if (!imageFile) {
+    throw new Error("No image provided.");
+  }
+
+  const irys = await getIrys();
+  const imageData = fs.readFileSync(imageFile.path);
+  const imageReceipt = await irys.upload(imageData);
+  const imageUrl = `https://gateway.irys.xyz/${imageReceipt.id}`;
+
+  const id = 420; // TODO: Replace with actual logic to generate id
+  const metadata = await prepareMetadata(merchantData, imageUrl, id);
+  const metadataReceipt = await irys.upload(JSON.stringify(metadata));
+  const metadataUri = `https://gateway.irys.xyz/${metadataReceipt.id}`;
+
+  fs.unlinkSync(imageFile.path);
+
+  // TODO: Replace with actual merkleTreeAddress
+  const merkleTreeAddress = "2A4sFviaeQnAv8Xx7DYQCWEWwizQMCGB9KtWKyCQBj4M";
+  await mintNFT(metadataUri, id, merkleTreeAddress, merchantData.owner);
+
+  const newMerchant = new Merchant({
+    ...merchantData,
+    image: imageUrl,
+  });
+  await newMerchant.save();
+
+  return {
+    imageDataId: imageReceipt.id,
+    metadataUri: metadataUri,
+    merchantId: id,
+  };
+};
