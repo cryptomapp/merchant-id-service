@@ -1,4 +1,4 @@
-import { generateImage } from "../images/imageGenerator";
+import { generateImage } from "../services/imageService";
 import { MerchantData, MerchantMetadata } from "../models/merchant";
 
 export async function prepareMetadata(

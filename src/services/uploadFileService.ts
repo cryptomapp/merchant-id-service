@@ -21,16 +21,20 @@ export const uploadFileService = async (
   const imageReceipt = await irys.upload(imageData);
   const imageUrl = `https://gateway.irys.xyz/${imageReceipt.id}`;
 
-  const id = 420; // TODO: Replace with actual logic to generate id
+  const id = 421; // TODO: Replace with actual logic to generate id
   const metadata = await prepareMetadata(merchantData, imageUrl, id);
   const metadataReceipt = await irys.upload(JSON.stringify(metadata));
   const metadataUri = `https://gateway.irys.xyz/${metadataReceipt.id}`;
 
   fs.unlinkSync(imageFile.path);
 
-  // TODO: Replace with actual merkleTreeAddress
-  const merkleTreeAddress = "2A4sFviaeQnAv8Xx7DYQCWEWwizQMCGB9KtWKyCQBj4M";
-  await mintNFT(metadataUri, id, merkleTreeAddress, merchantData.owner);
+  const merkleTreeAddress = process.env.MERKLE_TREE_ADDRESS || "";
+  const mintResult = await mintNFT(
+    metadataUri,
+    id,
+    merkleTreeAddress,
+    merchantData.owner
+  );
 
   const newMerchant = new Merchant({
     ...merchantData,
@@ -42,5 +46,6 @@ export const uploadFileService = async (
     imageDataId: imageReceipt.id,
     metadataUri: metadataUri,
     merchantId: id,
+    mintResult: mintResult,
   };
 };
