@@ -18,9 +18,14 @@ export const uploadFile = async (req: Request, res: Response) => {
       ...result,
     });
   } catch (error) {
-    console.error("Error during file upload or minting: ", error);
+    // Type assertion to Error
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : "Error uploading file or metadata or minting NFT";
+    console.error("Error during file upload or minting: ", errorMessage);
     res.status(500).json({
-      error: error.message || "Error uploading file or metadata or minting NFT",
+      error: errorMessage,
     });
   }
 };

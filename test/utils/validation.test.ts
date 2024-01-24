@@ -25,6 +25,7 @@ describe("isValidMerchantData", () => {
       Sunday: "9am-5pm",
     },
     timezone: "Europe/Paris",
+    owner: "HyZWBzi5EH9mm7FFhpAHQArm5JyY1KPeWgSxMN6YZdJy",
   };
 
   test("should return true for valid merchant data", () => {
