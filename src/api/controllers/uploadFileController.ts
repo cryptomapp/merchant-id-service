@@ -12,6 +12,8 @@ export const uploadFile = async (req: Request, res: Response) => {
 
     const result = await uploadFileService(merchantData, imageFile);
 
+    console.log("result: ", result);
+
     res.status(200).json({
       message:
         "File, metadata uploaded, NFT minted, and merchant data saved successfully",

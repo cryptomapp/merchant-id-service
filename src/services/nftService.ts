@@ -1,8 +1,43 @@
-import { keypairIdentity, none, publicKey } from "@metaplex-foundation/umi";
+import {
+  Umi,
+  keypairIdentity,
+  none,
+  publicKey,
+} from "@metaplex-foundation/umi";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 import { config } from "../config";
 import bs58 from "bs58";
-import { mintV1 } from "@metaplex-foundation/mpl-bubblegum";
+import {
+  LeafSchema,
+  findLeafAssetIdPda,
+  mintV1,
+  parseLeafFromMintV1Transaction,
+} from "@metaplex-foundation/mpl-bubblegum";
+
+async function ensureTransactionConfirmed(umi: Umi, signature: Uint8Array) {
+  let confirmed = false;
+  const maxAttempts = 10;
+  const delayMs = 2000;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      const transaction = await umi.rpc.getTransaction(signature, {
+        commitment: "finalized",
+      });
+      if (transaction) {
+        confirmed = true;
+        break;
+      }
+    } catch (error) {
+      console.error("Error fetching transaction:", error);
+    }
+    await new Promise((resolve) => setTimeout(resolve, delayMs));
+  }
+
+  if (!confirmed) {
+    throw new Error("Transaction not confirmed after maximum attempts");
+  }
+}
 
 export async function mintNFT(
   metadataUri: string,
@@ -40,5 +75,24 @@ export async function mintNFT(
     },
   }).sendAndConfirm(umi, { confirm: { commitment: "confirmed" } });
 
-  return signature;
+  await ensureTransactionConfirmed(umi, signature);
+
+  try {
+    const leaf: LeafSchema = await parseLeafFromMintV1Transaction(
+      umi,
+      signature
+    );
+    const assetIdPda = findLeafAssetIdPda(umi, {
+      merkleTree: merkleTreePublicKey,
+      leafIndex: BigInt(leaf.nonce),
+    });
+
+    // Serialize both BigInt values to strings for logging or JSON serialization
+    const assetId = [assetIdPda[0].toString(), assetIdPda[1].toString()];
+
+    return { assetId };
+  } catch (error) {
+    console.error("Error parsing leaf from mint transaction:", error);
+    throw error;
+  }
 }
