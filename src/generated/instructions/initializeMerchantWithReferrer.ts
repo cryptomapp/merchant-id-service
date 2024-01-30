@@ -38,7 +38,8 @@ export const initializeMerchantWithReferrerStruct = new beet.BeetArgsStruct<
  *
  * @property [_writable_] merchantAccount
  * @property [_writable_] userAccount
- * @property [_writable_, **signer**] user
+ * @property [] userPubkey
+ * @property [_writable_, **signer**] serviceWallet
  * @property [_writable_] state
  * @property [_writable_] referrerAccount
  * @property [] referrer
@@ -49,7 +50,8 @@ export const initializeMerchantWithReferrerStruct = new beet.BeetArgsStruct<
 export type InitializeMerchantWithReferrerInstructionAccounts = {
   merchantAccount: web3.PublicKey
   userAccount: web3.PublicKey
-  user: web3.PublicKey
+  userPubkey: web3.PublicKey
+  serviceWallet: web3.PublicKey
   state: web3.PublicKey
   systemProgram?: web3.PublicKey
   referrerAccount: web3.PublicKey
@@ -93,7 +95,12 @@ export function createInitializeMerchantWithReferrerInstruction(
       isSigner: false,
     },
     {
-      pubkey: accounts.user,
+      pubkey: accounts.userPubkey,
+      isWritable: false,
+      isSigner: false,
+    },
+    {
+      pubkey: accounts.serviceWallet,
       isWritable: true,
       isSigner: true,
     },

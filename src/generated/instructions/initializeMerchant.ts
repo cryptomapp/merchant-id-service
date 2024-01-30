@@ -38,7 +38,8 @@ export const initializeMerchantStruct = new beet.BeetArgsStruct<
  *
  * @property [_writable_] merchantAccount
  * @property [_writable_] userAccount
- * @property [_writable_, **signer**] user
+ * @property [] userPubkey
+ * @property [_writable_, **signer**] serviceWallet
  * @property [_writable_] state
  * @category Instructions
  * @category InitializeMerchant
@@ -47,7 +48,8 @@ export const initializeMerchantStruct = new beet.BeetArgsStruct<
 export type InitializeMerchantInstructionAccounts = {
   merchantAccount: web3.PublicKey
   userAccount: web3.PublicKey
-  user: web3.PublicKey
+  userPubkey: web3.PublicKey
+  serviceWallet: web3.PublicKey
   state: web3.PublicKey
   systemProgram?: web3.PublicKey
   anchorRemainingAccounts?: web3.AccountMeta[]
@@ -88,7 +90,12 @@ export function createInitializeMerchantInstruction(
       isSigner: false,
     },
     {
-      pubkey: accounts.user,
+      pubkey: accounts.userPubkey,
+      isWritable: false,
+      isSigner: false,
+    },
+    {
+      pubkey: accounts.serviceWallet,
       isWritable: true,
       isSigner: true,
     },

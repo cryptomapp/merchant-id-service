@@ -23,14 +23,18 @@ export const initializeUserStruct = new beet.BeetArgsStruct<{
  * Accounts required by the _initializeUser_ instruction
  *
  * @property [_writable_] userAccount
- * @property [_writable_, **signer**] user
+ * @property [] userPubkey
+ * @property [_writable_, **signer**] serviceWallet
+ * @property [] state
  * @category Instructions
  * @category InitializeUser
  * @category generated
  */
 export type InitializeUserInstructionAccounts = {
   userAccount: web3.PublicKey
-  user: web3.PublicKey
+  userPubkey: web3.PublicKey
+  serviceWallet: web3.PublicKey
+  state: web3.PublicKey
   systemProgram?: web3.PublicKey
   anchorRemainingAccounts?: web3.AccountMeta[]
 }
@@ -61,9 +65,19 @@ export function createInitializeUserInstruction(
       isSigner: false,
     },
     {
-      pubkey: accounts.user,
+      pubkey: accounts.userPubkey,
+      isWritable: false,
+      isSigner: false,
+    },
+    {
+      pubkey: accounts.serviceWallet,
       isWritable: true,
       isSigner: true,
+    },
+    {
+      pubkey: accounts.state,
+      isWritable: false,
+      isSigner: false,
     },
     {
       pubkey: accounts.systemProgram ?? web3.SystemProgram.programId,

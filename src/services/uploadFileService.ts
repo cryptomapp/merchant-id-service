@@ -4,7 +4,7 @@ import { isValidMerchantData } from "../utils/validation";
 import { Merchant, MerchantData } from "../models/merchant";
 import { prepareMetadata } from "../utils/prepareMetadata";
 import { mintNFT } from "./nftService";
-import { getMerchantCounter } from "../utils/cryptoMappClient";
+import { CryptoMappClient } from "../utils/cryptoMappClient";
 
 export const uploadFileService = async (
   merchantData: MerchantData,
@@ -22,7 +22,9 @@ export const uploadFileService = async (
   const imageReceipt = await irys.upload(imageData);
   const imageUrl = `https://gateway.irys.xyz/${imageReceipt.id}`;
 
-  const id = await getMerchantCounter();
+  const cryptoMappClient = CryptoMappClient.getInstance();
+  const id = await cryptoMappClient.getMerchantCounter();
+
   const metadata = await prepareMetadata(merchantData, imageUrl, id);
   const metadataReceipt = await irys.upload(JSON.stringify(metadata));
   const metadataUri = `https://gateway.irys.xyz/${metadataReceipt.id}`;
@@ -42,6 +44,9 @@ export const uploadFileService = async (
     image: imageUrl,
   });
   await newMerchant.save();
+
+  // todo: should handle if user has referrer
+  await cryptoMappClient.callInitializeMerchant(merchantData.owner, mintResult);
 
   return {
     imageDataId: imageReceipt.id,

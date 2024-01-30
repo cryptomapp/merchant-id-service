@@ -44,7 +44,7 @@ export async function mintNFT(
   id: number,
   merkleTreeAddress: string,
   leafOwnerPublicKeyStr: string
-): Promise<any> {
+): Promise<[string, number]> {
   const umi = createUmi(config.solanaProviderUrl);
 
   console.log("mintNFT - id: ", id);
@@ -90,9 +90,9 @@ export async function mintNFT(
     });
 
     // Serialize both BigInt values to strings for logging or JSON serialization
-    const assetId = [assetIdPda[0].toString(), assetIdPda[1].toString()];
+    const assetId: [string, number] = [assetIdPda[0].toString(), assetIdPda[1]];
 
-    return { assetId };
+    return assetId;
   } catch (error) {
     console.error("Error parsing leaf from mint transaction:", error);
     throw error;

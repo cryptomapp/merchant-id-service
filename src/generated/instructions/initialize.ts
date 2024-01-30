@@ -16,7 +16,9 @@ import * as beet from '@metaplex-foundation/beet'
  */
 export type InitializeInstructionArgs = {
   daoPubkey: web3.PublicKey
-  reviewWalletPubkey: web3.PublicKey
+  usersWalletPubkey: web3.PublicKey
+  merchantsWalletPubkey: web3.PublicKey
+  reviewsWalletPubkey: web3.PublicKey
 }
 /**
  * @category Instructions
@@ -31,7 +33,9 @@ export const initializeStruct = new beet.BeetArgsStruct<
   [
     ['instructionDiscriminator', beet.uniformFixedSizeArray(beet.u8, 8)],
     ['daoPubkey', beetSolana.publicKey],
-    ['reviewWalletPubkey', beetSolana.publicKey],
+    ['usersWalletPubkey', beetSolana.publicKey],
+    ['merchantsWalletPubkey', beetSolana.publicKey],
+    ['reviewsWalletPubkey', beetSolana.publicKey],
   ],
   'InitializeInstructionArgs'
 )

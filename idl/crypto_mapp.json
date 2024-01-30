@@ -1,0 +1,434 @@
+{
+  "version": "0.1.0",
+  "name": "crypto_mapp",
+  "instructions": [
+    {
+      "name": "initialize",
+      "accounts": [
+        {
+          "name": "state",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "daoPubkey",
+          "type": "publicKey"
+        },
+        {
+          "name": "usersWalletPubkey",
+          "type": "publicKey"
+        },
+        {
+          "name": "merchantsWalletPubkey",
+          "type": "publicKey"
+        },
+        {
+          "name": "reviewsWalletPubkey",
+          "type": "publicKey"
+        }
+      ]
+    },
+    {
+      "name": "initializeUser",
+      "accounts": [
+        {
+          "name": "userAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "userPubkey",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "serviceWallet",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "state",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initializeUserWithReferrer",
+      "accounts": [
+        {
+          "name": "userAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "referrerAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "userPubkey",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "referrer",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "serviceWallet",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "state",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "checkUserExists",
+      "accounts": [
+        {
+          "name": "user",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initializeMerchant",
+      "accounts": [
+        {
+          "name": "merchantAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "userAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "userPubkey",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "serviceWallet",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "state",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "nftIdentifier",
+          "type": {
+            "defined": "CnftIdentifier"
+          }
+        }
+      ]
+    },
+    {
+      "name": "initializeMerchantWithReferrer",
+      "accounts": [
+        {
+          "name": "merchantAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "userAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "userPubkey",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "serviceWallet",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "state",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "referrerAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "referrer",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "nftIdentifier",
+          "type": {
+            "defined": "CnftIdentifier"
+          }
+        }
+      ]
+    },
+    {
+      "name": "executeTransaction",
+      "accounts": [
+        {
+          "name": "sender",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "senderUsdcAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "receiverUsdcAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "daoUsdcAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "usdcMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "addRating",
+      "accounts": [
+        {
+          "name": "merchant",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "state",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "signer",
+          "isMut": true,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "rating",
+          "type": "u8"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Merchant",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "isInitialized",
+            "type": "bool"
+          },
+          {
+            "name": "nftIdentifier",
+            "type": {
+              "defined": "CnftIdentifier"
+            }
+          },
+          {
+            "name": "userPubkey",
+            "type": "publicKey"
+          },
+          {
+            "name": "ratings",
+            "type": "bytes"
+          }
+        ]
+      }
+    },
+    {
+      "name": "User",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "isInitialized",
+            "type": "bool"
+          },
+          {
+            "name": "expPoints",
+            "type": "u32"
+          },
+          {
+            "name": "referrer",
+            "type": {
+              "option": "publicKey"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "ProgramState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "daoPubkey",
+            "type": "publicKey"
+          },
+          {
+            "name": "usersWalletPubkey",
+            "type": "publicKey"
+          },
+          {
+            "name": "merchantsWalletPubkey",
+            "type": "publicKey"
+          },
+          {
+            "name": "reviewsWalletPubkey",
+            "type": "publicKey"
+          },
+          {
+            "name": "merchantCounter",
+            "type": "u32"
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "CnftIdentifier",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "merkleTreeAddress",
+            "type": "publicKey"
+          },
+          {
+            "name": "leafIndex",
+            "type": "u32"
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "UserDoesNotExist",
+      "msg": "The specified user does not exist."
+    },
+    {
+      "code": 6001,
+      "name": "UserAlreadyExists",
+      "msg": "The specified user already exists."
+    },
+    {
+      "code": 6002,
+      "name": "ReferrerDoesNotExist",
+      "msg": "The specified referrer does not exist."
+    },
+    {
+      "code": 6003,
+      "name": "TransactionAmountTooLow",
+      "msg": "Transaction amount is too low."
+    },
+    {
+      "code": 6004,
+      "name": "InsufficientFunds",
+      "msg": "Insufficient funds for the transaction."
+    },
+    {
+      "code": 6005,
+      "name": "InvalidRating",
+      "msg": "Invalid rating provided."
+    },
+    {
+      "code": 6006,
+      "name": "InvalidReferrer",
+      "msg": "Invalid referrer provided."
+    },
+    {
+      "code": 6007,
+      "name": "Unauthorized",
+      "msg": "Unauthorized."
+    }
+  ],
+  "metadata": {
+    "address": "8mDhNcko1rByfWLzVTuddx386JFwFnD3oDPWV2pzBckN",
+    "origin": "anchor",
+    "binaryVersion": "0.29.0",
+    "libVersion": "0.29.0"
+  }
+}

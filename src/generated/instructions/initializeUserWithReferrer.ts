@@ -24,8 +24,10 @@ export const initializeUserWithReferrerStruct = new beet.BeetArgsStruct<{
  *
  * @property [_writable_] userAccount
  * @property [_writable_] referrerAccount
- * @property [_writable_, **signer**] user
+ * @property [] userPubkey
  * @property [] referrer
+ * @property [_writable_, **signer**] serviceWallet
+ * @property [] state
  * @category Instructions
  * @category InitializeUserWithReferrer
  * @category generated
@@ -33,8 +35,10 @@ export const initializeUserWithReferrerStruct = new beet.BeetArgsStruct<{
 export type InitializeUserWithReferrerInstructionAccounts = {
   userAccount: web3.PublicKey
   referrerAccount: web3.PublicKey
-  user: web3.PublicKey
+  userPubkey: web3.PublicKey
   referrer: web3.PublicKey
+  serviceWallet: web3.PublicKey
+  state: web3.PublicKey
   systemProgram?: web3.PublicKey
   anchorRemainingAccounts?: web3.AccountMeta[]
 }
@@ -71,12 +75,22 @@ export function createInitializeUserWithReferrerInstruction(
       isSigner: false,
     },
     {
-      pubkey: accounts.user,
+      pubkey: accounts.userPubkey,
+      isWritable: false,
+      isSigner: false,
+    },
+    {
+      pubkey: accounts.referrer,
+      isWritable: false,
+      isSigner: false,
+    },
+    {
+      pubkey: accounts.serviceWallet,
       isWritable: true,
       isSigner: true,
     },
     {
-      pubkey: accounts.referrer,
+      pubkey: accounts.state,
       isWritable: false,
       isSigner: false,
     },
