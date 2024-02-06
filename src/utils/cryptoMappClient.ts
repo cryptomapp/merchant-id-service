@@ -25,8 +25,7 @@ export class CryptoMappClient {
       Uint8Array.from(
         JSON.parse(
           fs.readFileSync(
-            process.env.WALLET_FILE_PATH ||
-              "/Users/twentone37/my-solana-wallet.json",
+            process.env.WALLET_FILE_PATH || "./my-solana-wallet.json",
             "utf-8"
           )
         )

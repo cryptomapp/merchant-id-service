@@ -15,8 +15,8 @@ app.use(express.json());
 app.use("/upload", uploadFileRouter);
 
 // TODO: Admin only
-app.use("/fundNode", fundNodeRouter);
-app.use("/deployBubblegumTree", deployBubblegumTreeRouter);
+app.use("/fund-node", fundNodeRouter);
+app.use("/deploy-bubblegum-tree", deployBubblegumTreeRouter);
 
 // Register the error handling middleware
 app.use(errorMiddleware);

@@ -10,6 +10,8 @@ export const uploadFile = async (req: Request, res: Response) => {
       throw new Error("Image file is missing.");
     }
 
+    console.log("Merchant data: ", merchantData);
+
     const result = await uploadFileService(merchantData, imageFile);
 
     console.log("result: ", result);

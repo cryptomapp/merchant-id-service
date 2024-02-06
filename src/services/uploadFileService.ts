@@ -5,6 +5,7 @@ import { Merchant, MerchantData } from "../models/merchant";
 import { prepareMetadata } from "../utils/prepareMetadata";
 import { mintNFT } from "./nftService";
 import { CryptoMappClient } from "../utils/cryptoMappClient";
+import { generateCategoriesFromDescription } from "./openAiService";
 
 export const uploadFileService = async (
   merchantData: MerchantData,
@@ -17,21 +18,40 @@ export const uploadFileService = async (
     throw new Error("No image provided.");
   }
 
+  console.log("UploadFileService: ", merchantData, imageFile);
+
+  // // Generate categories based on the merchant's description
+  // const categories = await generateCategoriesFromDescription(
+  //   merchantData.description
+  // );
+
+  console.log("Getting irys...");
   const irys = await getIrys();
   const imageData = fs.readFileSync(imageFile.path);
+  console.log("Uploading image...");
   const imageReceipt = await irys.upload(imageData);
   const imageUrl = `https://gateway.irys.xyz/${imageReceipt.id}`;
 
+  console.log("Getting CryptoMappClient...");
   const cryptoMappClient = CryptoMappClient.getInstance();
+
+  console.log("Getting merchant counter...");
   const id = await cryptoMappClient.getMerchantCounter();
 
+  // const metadataWithCategories = {
+  //   ...merchantData,
+  //   categories,
+  //   image: imageUrl,
+  // };
   const metadata = await prepareMetadata(merchantData, imageUrl, id);
   const metadataReceipt = await irys.upload(JSON.stringify(metadata));
   const metadataUri = `https://gateway.irys.xyz/${metadataReceipt.id}`;
 
   fs.unlinkSync(imageFile.path);
 
-  const merkleTreeAddress = process.env.MERKLE_TREE_ADDRESS || "";
+  const merkleTreeAddress =
+    process.env.MERKLE_TREE_ADDRESS ||
+    "CdpanipvRBte9gEAhxryXhGCMkv6fY5R1Z8qvgqaJP5F";
   const mintResult = await mintNFT(
     metadataUri,
     id,
@@ -39,11 +59,16 @@ export const uploadFileService = async (
     merchantData.owner
   );
 
+  console.log("Mint result: ", mintResult);
+
   const newMerchant = new Merchant({
     ...merchantData,
     image: imageUrl,
+    // categories: categories,
   });
   await newMerchant.save();
+
+  console.log("Saved in Mongo");
 
   // todo: should handle if user has referrer
   await cryptoMappClient.callInitializeMerchant(merchantData.owner, mintResult);

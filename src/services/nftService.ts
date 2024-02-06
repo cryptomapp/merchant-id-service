@@ -51,16 +51,21 @@ export async function mintNFT(
 
   // Decode the Base58 private key for the creator (your wallet)
   const creatorSecretKeyUint8Array = bs58.decode(config.solPrivateKey);
+  console.log("created secret key");
   const creatorSigner = umi.eddsa.createKeypairFromSecretKey(
     creatorSecretKeyUint8Array
   );
   umi.use(keypairIdentity(creatorSigner));
 
+  console.log("created signer");
   // Convert the Merkle Tree address from string to PublicKey
   const merkleTreePublicKey = publicKey(merkleTreeAddress);
 
+  console.log("created merkleTreePublicKey");
   // Convert the leaf owner's public key from string to PublicKey
   const leafOwnerPublicKey = publicKey(leafOwnerPublicKeyStr);
+
+  console.log("created leafOwnerPublicKey");
 
   // Mint the cNFT for the specified leaf owner
   const { signature } = await mintV1(umi, {
@@ -77,7 +82,11 @@ export async function mintNFT(
     },
   }).sendAndConfirm(umi, { confirm: { commitment: "confirmed" } });
 
+  console.log("minted cNFT");
+
   await ensureTransactionConfirmed(umi, signature);
+
+  console.log("confirmed transaction");
 
   try {
     const leaf: LeafSchema = await parseLeafFromMintV1Transaction(

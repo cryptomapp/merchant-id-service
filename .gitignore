@@ -95,3 +95,6 @@ public
 
 # Serverless directories
 .serverless/
+
+# Solana Wallet
+my-solana-wallet.json

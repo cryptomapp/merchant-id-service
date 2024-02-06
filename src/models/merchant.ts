@@ -18,6 +18,7 @@ const merchantSchema = new mongoose.Schema({
   },
   timezone: { type: String, required: true },
   image: { type: String, required: false },
+  categories: [{ type: String }],
 });
 
 // Interface to represent a merchant document in MongoDB
@@ -36,6 +37,7 @@ export interface MerchantDocument extends Document {
   openingHours: Map<string, string>;
   timezone: string;
   image?: string;
+  categories?: string[];
 }
 
 export const Merchant = mongoose.model("Merchant", merchantSchema);
@@ -54,6 +56,7 @@ export interface MerchantData {
   phoneNumber: string;
   openingHours: { [key: string]: string };
   timezone: string;
+  categories?: string[];
 }
 
 export interface MerchantMetadata {
