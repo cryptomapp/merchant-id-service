@@ -10,6 +10,8 @@ import { ProgramState } from "../generated/accounts/ProgramState";
 import { createInitializeMerchantInstruction } from "../generated/instructions/initializeMerchant";
 import { CnftIdentifier, PROGRAM_ID } from "../generated";
 import fs from "fs";
+import bs58 from "bs58";
+import { config } from "../config";
 
 export class CryptoMappClient {
   private static instance: CryptoMappClient;
@@ -21,16 +23,8 @@ export class CryptoMappClient {
   private constructor() {
     this.connection = new Connection(clusterApiUrl("devnet"), "confirmed");
     this.programId = new PublicKey(PROGRAM_ID);
-    this.serviceWallet = Keypair.fromSecretKey(
-      Uint8Array.from(
-        JSON.parse(
-          fs.readFileSync(
-            process.env.WALLET_FILE_PATH || "./my-solana-wallet.json",
-            "utf-8"
-          )
-        )
-      )
-    );
+    const secretKeyUint8Array = bs58.decode(config.solPrivateKey);
+    this.serviceWallet = Keypair.fromSecretKey(secretKeyUint8Array);
     this.stateAddress = new PublicKey(
       "9Zxs8fDSskUJ5S1vEsFe9eraz3f1NsQ83BKpwQvqNHw1"
     );
@@ -58,14 +52,9 @@ export class CryptoMappClient {
     userPublicKeyString: string,
     nftIdentifierArray: [string, number]
   ): Promise<string> {
-    console.log(
-      "callInitializeMerchant - userPublicKeyString: ",
-      userPublicKeyString
-    );
     const userPublicKey = new PublicKey(userPublicKeyString);
     // Calculate the PDA for the user account
     const [userPda] = await calculatePDA(this.programId, userPublicKey, "user");
-    console.log("userPda: ", userPda.toBase58());
 
     // Calculate the PDA for the merchant account
     const [merchantPda] = await calculatePDA(

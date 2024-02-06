@@ -51,13 +51,11 @@ export async function mintNFT(
 
   // Decode the Base58 private key for the creator (your wallet)
   const creatorSecretKeyUint8Array = bs58.decode(config.solPrivateKey);
-  console.log("created secret key");
   const creatorSigner = umi.eddsa.createKeypairFromSecretKey(
     creatorSecretKeyUint8Array
   );
   umi.use(keypairIdentity(creatorSigner));
 
-  console.log("created signer");
   // Convert the Merkle Tree address from string to PublicKey
   const merkleTreePublicKey = publicKey(merkleTreeAddress);
 

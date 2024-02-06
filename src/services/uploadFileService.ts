@@ -6,6 +6,7 @@ import { prepareMetadata } from "../utils/prepareMetadata";
 import { mintNFT } from "./nftService";
 import { CryptoMappClient } from "../utils/cryptoMappClient";
 import { generateCategoriesFromDescription } from "./openAiService";
+import { config } from "../config";
 
 export const uploadFileService = async (
   merchantData: MerchantData,
@@ -49,9 +50,7 @@ export const uploadFileService = async (
 
   fs.unlinkSync(imageFile.path);
 
-  const merkleTreeAddress =
-    process.env.MERKLE_TREE_ADDRESS ||
-    "CdpanipvRBte9gEAhxryXhGCMkv6fY5R1Z8qvgqaJP5F";
+  const merkleTreeAddress = config.bubblegumTreeAddress;
   const mintResult = await mintNFT(
     metadataUri,
     id,

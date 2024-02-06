@@ -5,8 +5,7 @@ export const getIrys = async () => {
   const irys = new Irys({
     url: config.irysUrl,
     token: "solana",
-    // key: config.solPrivateKey,
-    key: "4GVrk3J7GB8a29RqqBG6x9WZieDufp3ngPc6zcRH3JzfQN3WxLjMbgf98feTWdivSoXxM5EqpQQtzZzrAG6qJDMs",
+    key: config.solPrivateKey,
     config: { providerUrl: config.solanaProviderUrl },
   });
   return irys;

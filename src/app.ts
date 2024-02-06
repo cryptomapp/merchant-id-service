@@ -4,6 +4,7 @@ import uploadFileRouter from "./api/routes/uploadFileRoutes";
 import deployBubblegumTreeRouter from "./api/routes/deployBubblegumTreeRoutes";
 import { connectToMongoDB } from "./config/mongoConnections";
 import { errorMiddleware } from "./api/middleware/errorMiddleware";
+import { config } from "./config";
 
 const app = express();
 
@@ -21,11 +22,9 @@ app.use("/deploy-bubblegum-tree", deployBubblegumTreeRouter);
 // Register the error handling middleware
 app.use(errorMiddleware);
 
-const PORT = process.env.PORT || 3000;
-
 if (process.env.NODE_ENV !== "test") {
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  app.listen(config.port, () => {
+    console.log(`Server running on port ${config.port}`);
   });
 }
 

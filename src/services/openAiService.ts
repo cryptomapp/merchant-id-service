@@ -1,6 +1,7 @@
 import OpenAI from "openai";
 import fs from "fs";
 import path from "path";
+import { config } from "../config";
 
 // Load and optimize categories
 const categoriesPath = path.join(__dirname, "../config/categories.json");
@@ -8,10 +9,9 @@ const categoriesArray = JSON.parse(fs.readFileSync(categoriesPath, "utf8"));
 const categories = categoriesArray.join(", "); // Simple string concatenation
 
 // todo: delete
-const apiKey = "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";
 
 const openai = new OpenAI({
-  apiKey: apiKey,
+  apiKey: config.openAiApiKey,
 });
 
 /**
