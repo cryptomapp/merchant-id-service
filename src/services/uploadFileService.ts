@@ -21,10 +21,10 @@ export const uploadFileService = async (
 
   console.log("UploadFileService: ", merchantData, imageFile);
 
-  // // Generate categories based on the merchant's description
-  // const categories = await generateCategoriesFromDescription(
-  //   merchantData.description
-  // );
+  // Generate categories based on the merchant's description
+  const categories = await generateCategoriesFromDescription(
+    merchantData.description
+  );
 
   console.log("Getting irys...");
   const irys = await getIrys();
@@ -39,11 +39,11 @@ export const uploadFileService = async (
   console.log("Getting merchant counter...");
   const id = await cryptoMappClient.getMerchantCounter();
 
-  // const metadataWithCategories = {
-  //   ...merchantData,
-  //   categories,
-  //   image: imageUrl,
-  // };
+  const metadataWithCategories = {
+    ...merchantData,
+    categories,
+    image: imageUrl,
+  };
   const metadata = await prepareMetadata(merchantData, imageUrl, id);
   const metadataReceipt = await irys.upload(JSON.stringify(metadata));
   const metadataUri = `https://gateway.irys.xyz/${metadataReceipt.id}`;
@@ -63,8 +63,11 @@ export const uploadFileService = async (
   const newMerchant = new Merchant({
     ...merchantData,
     image: imageUrl,
-    // categories: categories,
+    categories: [""],
   });
+
+  console.log("halo");
+
   await newMerchant.save();
 
   console.log("Saved in Mongo");

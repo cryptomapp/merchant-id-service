@@ -8,43 +8,44 @@ const categoriesPath = path.join(__dirname, "../config/categories.json");
 const categoriesArray = JSON.parse(fs.readFileSync(categoriesPath, "utf8"));
 const categories = categoriesArray.join(", "); // Simple string concatenation
 
-// todo: delete
-
 const openai = new OpenAI({
   apiKey: config.openAiApiKey,
 });
 
 /**
- * Generates categories based on the provided description.
- * @param {string} description - The merchant's description.
- * @returns {Promise<string[]>} - The most fitting categories.
+ * Generates a category based on the provided description.
+ * @param description - The merchant's description.
+ * @returns A promise that resolves to a single, most fitting category.
  */
 export async function generateCategoriesFromDescription(
   description: string
-): Promise<string[]> {
-  const prompt = `Detect language and pick category based on "${description}". You can pick only from the list: ${categories}`;
-
-  console.log("Prompt:", prompt);
+): Promise<string> {
   try {
-    const completion = await openai.completions.create({
+    const chatCompletion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
-      prompt: prompt,
-      temperature: 0.7,
-      max_tokens: 600, // Adjust based on your needs
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are a helpful assistant able to detect different languages and selecting the best fitting merchant category",
+        },
+        {
+          role: "user",
+          content: `Given the description "${description}", identify the most fitting category from the following list: ${categories}.`,
+        },
+      ],
     });
 
-    console.log("Completion:", completion);
+    // Extract the text response directly without assuming JSON structure
+    const responseContent =
+      chatCompletion.choices[0]?.message?.content?.trim() ?? "unknown";
 
-    // Assuming the response is a comma-separated list of categories
-    const responseCategories = completion.choices[0].text
-      .trim()
-      .split(",")
-      .map((cat) => cat.trim());
+    console.log("Response category:", responseContent);
 
-    console.log("Response categories:", responseCategories);
-    return responseCategories.filter((cat) => categoriesArray.includes(cat)); // Filter based on original list to ensure validity
+    // Directly return the response without filtering, assuming it provides a valid category
+    return responseContent; // If you need to ensure the response is within your categories, you can still perform a check here
   } catch (error) {
-    console.error("Error generating categories:", error);
-    return [];
+    console.error("Error generating category:", error);
+    return "error"; // Return a default or error indicator as appropriate
   }
 }

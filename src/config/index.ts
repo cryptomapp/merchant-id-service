@@ -11,9 +11,9 @@ export const config = {
   bubblegumTreeAddress:
     process.env.MERKLE_TREE_ADDRESS ||
     "CdpanipvRBte9gEAhxryXhGCMkv6fY5R1Z8qvgqaJP5F",
-  mongoUri: process.env.MONGO_URI || "mongodb://localhost:27017/merchants",
+  mongoUri: process.env.MONGO_URI || "mongodb://mongo:27017/merchants",
   port: process.env.PORT || 3000,
   openAiApiKey:
     process.env.OPENAI_API_KEY ||
-    "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",
+    "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",
 };
