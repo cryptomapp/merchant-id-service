@@ -5,6 +5,7 @@ import deployBubblegumTreeRouter from "./api/routes/deployBubblegumTreeRoutes";
 import { connectToMongoDB } from "./config/mongoConnections";
 import { errorMiddleware } from "./api/middleware/errorMiddleware";
 import { config } from "./config";
+import cors from "cors";
 
 const app = express();
 
@@ -12,7 +13,12 @@ connectToMongoDB();
 
 app.use(express.json());
 
-// TODO: Add Cors
+app.use(
+  cors({
+    origin: config.frontendUrl,
+  })
+);
+
 app.use("/upload", uploadFileRouter);
 
 // TODO: Admin only
