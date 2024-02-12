@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const config = {
-  frontendUrl: process.env.FRONTEND_URL || "https://www.cryptomapp.vercel.app",
+  frontendUrl: process.env.FRONTEND_URL || "https://cryptomapp.vercel.app",
   irysUrl: process.env.IRYS_URL || "https://devnet.irys.xyz",
   solanaProviderUrl:
     process.env.SOLANA_PROVIDER_URL || "https://api.devnet.solana.com",
