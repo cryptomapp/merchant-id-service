@@ -15,10 +15,13 @@ import * as beet from '@metaplex-foundation/beet'
  * @category generated
  */
 export type ProgramStateArgs = {
+  usdcMint: web3.PublicKey
+  transactionFeePercentage: number
   daoPubkey: web3.PublicKey
-  usersWalletPubkey: web3.PublicKey
-  merchantsWalletPubkey: web3.PublicKey
-  reviewsWalletPubkey: web3.PublicKey
+  onboardingServiceWalletPubkey: web3.PublicKey
+  merchantIdServiceWalletPubkey: web3.PublicKey
+  transactionServiceWalletPubkey: web3.PublicKey
+  reviewServiceWalletPubkey: web3.PublicKey
   merchantCounter: number
 }
 
@@ -32,10 +35,13 @@ export const programStateDiscriminator = [77, 209, 137, 229, 149, 67, 167, 230]
  */
 export class ProgramState implements ProgramStateArgs {
   private constructor(
+    readonly usdcMint: web3.PublicKey,
+    readonly transactionFeePercentage: number,
     readonly daoPubkey: web3.PublicKey,
-    readonly usersWalletPubkey: web3.PublicKey,
-    readonly merchantsWalletPubkey: web3.PublicKey,
-    readonly reviewsWalletPubkey: web3.PublicKey,
+    readonly onboardingServiceWalletPubkey: web3.PublicKey,
+    readonly merchantIdServiceWalletPubkey: web3.PublicKey,
+    readonly transactionServiceWalletPubkey: web3.PublicKey,
+    readonly reviewServiceWalletPubkey: web3.PublicKey,
     readonly merchantCounter: number
   ) {}
 
@@ -44,10 +50,13 @@ export class ProgramState implements ProgramStateArgs {
    */
   static fromArgs(args: ProgramStateArgs) {
     return new ProgramState(
+      args.usdcMint,
+      args.transactionFeePercentage,
       args.daoPubkey,
-      args.usersWalletPubkey,
-      args.merchantsWalletPubkey,
-      args.reviewsWalletPubkey,
+      args.onboardingServiceWalletPubkey,
+      args.merchantIdServiceWalletPubkey,
+      args.transactionServiceWalletPubkey,
+      args.reviewServiceWalletPubkey,
       args.merchantCounter
     )
   }
@@ -155,10 +164,16 @@ export class ProgramState implements ProgramStateArgs {
    */
   pretty() {
     return {
+      usdcMint: this.usdcMint.toBase58(),
+      transactionFeePercentage: this.transactionFeePercentage,
       daoPubkey: this.daoPubkey.toBase58(),
-      usersWalletPubkey: this.usersWalletPubkey.toBase58(),
-      merchantsWalletPubkey: this.merchantsWalletPubkey.toBase58(),
-      reviewsWalletPubkey: this.reviewsWalletPubkey.toBase58(),
+      onboardingServiceWalletPubkey:
+        this.onboardingServiceWalletPubkey.toBase58(),
+      merchantIdServiceWalletPubkey:
+        this.merchantIdServiceWalletPubkey.toBase58(),
+      transactionServiceWalletPubkey:
+        this.transactionServiceWalletPubkey.toBase58(),
+      reviewServiceWalletPubkey: this.reviewServiceWalletPubkey.toBase58(),
       merchantCounter: this.merchantCounter,
     }
   }
@@ -176,10 +191,13 @@ export const programStateBeet = new beet.BeetStruct<
 >(
   [
     ['accountDiscriminator', beet.uniformFixedSizeArray(beet.u8, 8)],
+    ['usdcMint', beetSolana.publicKey],
+    ['transactionFeePercentage', beet.u8],
     ['daoPubkey', beetSolana.publicKey],
-    ['usersWalletPubkey', beetSolana.publicKey],
-    ['merchantsWalletPubkey', beetSolana.publicKey],
-    ['reviewsWalletPubkey', beetSolana.publicKey],
+    ['onboardingServiceWalletPubkey', beetSolana.publicKey],
+    ['merchantIdServiceWalletPubkey', beetSolana.publicKey],
+    ['transactionServiceWalletPubkey', beetSolana.publicKey],
+    ['reviewServiceWalletPubkey', beetSolana.publicKey],
     ['merchantCounter', beet.u32],
   ],
   ProgramState.fromArgs,

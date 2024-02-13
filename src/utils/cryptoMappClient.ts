@@ -26,7 +26,7 @@ export class CryptoMappClient {
     const secretKeyUint8Array = bs58.decode(config.solPrivateKey);
     this.serviceWallet = Keypair.fromSecretKey(secretKeyUint8Array);
     this.stateAddress = new PublicKey(
-      "9Zxs8fDSskUJ5S1vEsFe9eraz3f1NsQ83BKpwQvqNHw1"
+      "EcTqAJBJKu6NEGccBSqPoMSFSjFzniG7sWjVqajt5M85"
     );
   }
 
@@ -62,13 +62,6 @@ export class CryptoMappClient {
       userPublicKey,
       "merchant"
     );
-
-    console.log("Before createInitializeMerchantInstruction");
-    console.log("merchantPda: ", merchantPda?.toBase58());
-    console.log("userPda: ", userPda?.toBase58());
-    console.log("userPublicKey: ", userPublicKey?.toBase58());
-    console.log("stateAddress: ", this.stateAddress?.toBase58());
-    console.log("nftIdentifier: ", nftIdentifierArray);
 
     const nftIdentifier: CnftIdentifier = {
       merkleTreeAddress: new PublicKey(nftIdentifierArray[0]),

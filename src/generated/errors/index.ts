@@ -170,13 +170,36 @@ createErrorFromNameLookup.set(
 )
 
 /**
+ * InvalidTokenAccount: 'Invalid token account.'
+ *
+ * @category Errors
+ * @category generated
+ */
+export class InvalidTokenAccountError extends Error {
+  readonly code: number = 0x1777
+  readonly name: string = 'InvalidTokenAccount'
+  constructor() {
+    super('Invalid token account.')
+    if (typeof Error.captureStackTrace === 'function') {
+      Error.captureStackTrace(this, InvalidTokenAccountError)
+    }
+  }
+}
+
+createErrorFromCodeLookup.set(0x1777, () => new InvalidTokenAccountError())
+createErrorFromNameLookup.set(
+  'InvalidTokenAccount',
+  () => new InvalidTokenAccountError()
+)
+
+/**
  * Unauthorized: 'Unauthorized.'
  *
  * @category Errors
  * @category generated
  */
 export class UnauthorizedError extends Error {
-  readonly code: number = 0x1777
+  readonly code: number = 0x1778
   readonly name: string = 'Unauthorized'
   constructor() {
     super('Unauthorized.')
@@ -186,7 +209,7 @@ export class UnauthorizedError extends Error {
   }
 }
 
-createErrorFromCodeLookup.set(0x1777, () => new UnauthorizedError())
+createErrorFromCodeLookup.set(0x1778, () => new UnauthorizedError())
 createErrorFromNameLookup.set('Unauthorized', () => new UnauthorizedError())
 
 /**

@@ -3,6 +3,7 @@ const path = require("path");
 const programDir = path.join(
   __dirname,
   "..",
+  "..",
   "Solana",
   "crypto-mapp",
   "programs",

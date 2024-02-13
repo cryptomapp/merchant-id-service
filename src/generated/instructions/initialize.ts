@@ -15,10 +15,13 @@ import * as beet from '@metaplex-foundation/beet'
  * @category generated
  */
 export type InitializeInstructionArgs = {
+  usdcMint: web3.PublicKey
+  transactionFeePercentage: number
   daoPubkey: web3.PublicKey
-  usersWalletPubkey: web3.PublicKey
-  merchantsWalletPubkey: web3.PublicKey
-  reviewsWalletPubkey: web3.PublicKey
+  onboardingServiceWalletPubkey: web3.PublicKey
+  merchantIdServiceWalletPubkey: web3.PublicKey
+  transactionServiceWalletPubkey: web3.PublicKey
+  reviewServiceWalletPubkey: web3.PublicKey
 }
 /**
  * @category Instructions
@@ -32,10 +35,13 @@ export const initializeStruct = new beet.BeetArgsStruct<
 >(
   [
     ['instructionDiscriminator', beet.uniformFixedSizeArray(beet.u8, 8)],
+    ['usdcMint', beetSolana.publicKey],
+    ['transactionFeePercentage', beet.u8],
     ['daoPubkey', beetSolana.publicKey],
-    ['usersWalletPubkey', beetSolana.publicKey],
-    ['merchantsWalletPubkey', beetSolana.publicKey],
-    ['reviewsWalletPubkey', beetSolana.publicKey],
+    ['onboardingServiceWalletPubkey', beetSolana.publicKey],
+    ['merchantIdServiceWalletPubkey', beetSolana.publicKey],
+    ['transactionServiceWalletPubkey', beetSolana.publicKey],
+    ['reviewServiceWalletPubkey', beetSolana.publicKey],
   ],
   'InitializeInstructionArgs'
 )

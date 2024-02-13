@@ -40,7 +40,7 @@ export const executeTransactionStruct = new beet.BeetArgsStruct<
  * @property [_writable_] senderUsdcAccount
  * @property [_writable_] receiverUsdcAccount
  * @property [_writable_] daoUsdcAccount
- * @property [] usdcMint
+ * @property [_writable_] state
  * @category Instructions
  * @category ExecuteTransaction
  * @category generated
@@ -50,7 +50,7 @@ export type ExecuteTransactionInstructionAccounts = {
   senderUsdcAccount: web3.PublicKey
   receiverUsdcAccount: web3.PublicKey
   daoUsdcAccount: web3.PublicKey
-  usdcMint: web3.PublicKey
+  state: web3.PublicKey
   tokenProgram?: web3.PublicKey
   anchorRemainingAccounts?: web3.AccountMeta[]
 }
@@ -100,8 +100,8 @@ export function createExecuteTransactionInstruction(
       isSigner: false,
     },
     {
-      pubkey: accounts.usdcMint,
-      isWritable: false,
+      pubkey: accounts.state,
+      isWritable: true,
       isSigner: false,
     },
     {

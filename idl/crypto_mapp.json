@@ -23,19 +23,31 @@
       ],
       "args": [
         {
+          "name": "usdcMint",
+          "type": "publicKey"
+        },
+        {
+          "name": "transactionFeePercentage",
+          "type": "u8"
+        },
+        {
           "name": "daoPubkey",
           "type": "publicKey"
         },
         {
-          "name": "usersWalletPubkey",
+          "name": "onboardingServiceWalletPubkey",
           "type": "publicKey"
         },
         {
-          "name": "merchantsWalletPubkey",
+          "name": "merchantIdServiceWalletPubkey",
           "type": "publicKey"
         },
         {
-          "name": "reviewsWalletPubkey",
+          "name": "transactionServiceWalletPubkey",
+          "type": "publicKey"
+        },
+        {
+          "name": "reviewServiceWalletPubkey",
           "type": "publicKey"
         }
       ]
@@ -243,8 +255,8 @@
           "isSigner": false
         },
         {
-          "name": "usdcMint",
-          "isMut": false,
+          "name": "state",
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -342,19 +354,31 @@
         "kind": "struct",
         "fields": [
           {
+            "name": "usdcMint",
+            "type": "publicKey"
+          },
+          {
+            "name": "transactionFeePercentage",
+            "type": "u8"
+          },
+          {
             "name": "daoPubkey",
             "type": "publicKey"
           },
           {
-            "name": "usersWalletPubkey",
+            "name": "onboardingServiceWalletPubkey",
             "type": "publicKey"
           },
           {
-            "name": "merchantsWalletPubkey",
+            "name": "merchantIdServiceWalletPubkey",
             "type": "publicKey"
           },
           {
-            "name": "reviewsWalletPubkey",
+            "name": "transactionServiceWalletPubkey",
+            "type": "publicKey"
+          },
+          {
+            "name": "reviewServiceWalletPubkey",
             "type": "publicKey"
           },
           {
@@ -421,6 +445,11 @@
     },
     {
       "code": 6007,
+      "name": "InvalidTokenAccount",
+      "msg": "Invalid token account."
+    },
+    {
+      "code": 6008,
       "name": "Unauthorized",
       "msg": "Unauthorized."
     }
