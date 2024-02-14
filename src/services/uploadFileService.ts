@@ -22,7 +22,7 @@ export const uploadFileService = async (
   console.log("UploadFileService: ", merchantData, imageFile);
 
   // Generate categories based on the merchant's description
-  const categories = await generateCategoriesFromDescription(
+  const category = await generateCategoriesFromDescription(
     merchantData.description
   );
 
@@ -39,16 +39,17 @@ export const uploadFileService = async (
   console.log("Getting merchant counter...");
   const id = await cryptoMappClient.getMerchantCounter();
 
-  const metadataWithCategories = {
+  const metadataWithCategories: MerchantData = {
     ...merchantData,
-    categories,
-    image: imageUrl,
+    category,
   };
-  const metadata = await prepareMetadata(merchantData, imageUrl, id);
+  const metadata = await prepareMetadata(metadataWithCategories, imageUrl, id);
   const metadataReceipt = await irys.upload(JSON.stringify(metadata));
   const metadataUri = `https://gateway.irys.xyz/${metadataReceipt.id}`;
 
   fs.unlinkSync(imageFile.path);
+
+  console.log("Minting NFT...");
 
   const merkleTreeAddress = config.bubblegumTreeAddress;
   const mintResult = await mintNFT(
@@ -58,19 +59,15 @@ export const uploadFileService = async (
     merchantData.owner
   );
 
-  console.log("Mint result: ", mintResult);
+  console.log("Saving merchant...");
 
   const newMerchant = new Merchant({
     ...merchantData,
     image: imageUrl,
-    categories: [""],
+    category: category,
   });
 
-  console.log("halo");
-
   await newMerchant.save();
-
-  console.log("Saved in Mongo");
 
   // todo: should handle if user has referrer
   await cryptoMappClient.callInitializeMerchant(merchantData.owner, mintResult);
