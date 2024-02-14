@@ -28,7 +28,7 @@ RUN mkdir -p dist/images
 # Copy the built code from the builder stage
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/src/config/categories.json ./dist/config/categories.json
-COPY --from=builder /app/images/blueprint.png ./dist/images/blueprint.png  
+COPY --from=builder /app/src/images/blueprint.png ./dist/images/blueprint.png  
 COPY package*.json ./
 COPY yarn.lock ./
 
