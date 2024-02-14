@@ -23,10 +23,12 @@ FROM node:18-slim
 WORKDIR /app
 
 RUN mkdir uploads/
+RUN mkdir -p dist/images  
 
 # Copy the built code from the builder stage
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/src/config/categories.json ./dist/config/categories.json
+COPY --from=builder /app/images/blueprint.png ./dist/images/blueprint.png  
 COPY package*.json ./
 COPY yarn.lock ./
 
