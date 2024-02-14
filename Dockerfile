@@ -26,6 +26,7 @@ RUN mkdir uploads/
 
 # Copy the built code from the builder stage
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/src/config/categories.json ./dist/config/categories.json
 COPY package*.json ./
 COPY yarn.lock ./
 

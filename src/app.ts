@@ -15,7 +15,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: config.frontendUrl,
+    origin: [config.frontendUrl, "http://localhost:9000"],
   })
 );
 
