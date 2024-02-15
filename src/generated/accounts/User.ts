@@ -16,6 +16,7 @@ import * as beetSolana from '@metaplex-foundation/beet-solana'
  */
 export type UserArgs = {
   isInitialized: boolean
+  isMerchant: boolean
   expPoints: number
   referrer: beet.COption<web3.PublicKey>
 }
@@ -31,6 +32,7 @@ export const userDiscriminator = [159, 117, 95, 227, 239, 151, 58, 236]
 export class User implements UserArgs {
   private constructor(
     readonly isInitialized: boolean,
+    readonly isMerchant: boolean,
     readonly expPoints: number,
     readonly referrer: beet.COption<web3.PublicKey>
   ) {}
@@ -39,7 +41,12 @@ export class User implements UserArgs {
    * Creates a {@link User} instance from the provided args.
    */
   static fromArgs(args: UserArgs) {
-    return new User(args.isInitialized, args.expPoints, args.referrer)
+    return new User(
+      args.isInitialized,
+      args.isMerchant,
+      args.expPoints,
+      args.referrer
+    )
   }
 
   /**
@@ -148,6 +155,7 @@ export class User implements UserArgs {
   pretty() {
     return {
       isInitialized: this.isInitialized,
+      isMerchant: this.isMerchant,
       expPoints: this.expPoints,
       referrer: this.referrer,
     }
@@ -167,6 +175,7 @@ export const userBeet = new beet.FixableBeetStruct<
   [
     ['accountDiscriminator', beet.uniformFixedSizeArray(beet.u8, 8)],
     ['isInitialized', beet.bool],
+    ['isMerchant', beet.bool],
     ['expPoints', beet.u32],
     ['referrer', beet.coption(beetSolana.publicKey)],
   ],

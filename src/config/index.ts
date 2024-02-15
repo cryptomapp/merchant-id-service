@@ -14,6 +14,8 @@ export const config = {
     "CdpanipvRBte9gEAhxryXhGCMkv6fY5R1Z8qvgqaJP5F",
   mongoUri: process.env.MONGO_URI || "mongodb://mongo:27017/merchants",
   port: process.env.PORT || 3000,
+  stateAddress:
+    process.env.STATE_ADDRESS || "5HzkGM1XFoVrrPLjanQ7Le1Aa4iHPf3aivfKLUztmwFn",
   openAiApiKey:
     process.env.OPENAI_API_KEY ||
     "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",

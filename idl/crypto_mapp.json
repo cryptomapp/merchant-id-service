@@ -336,6 +336,10 @@
             "type": "bool"
           },
           {
+            "name": "isMerchant",
+            "type": "bool"
+          },
+          {
             "name": "expPoints",
             "type": "u32"
           },
