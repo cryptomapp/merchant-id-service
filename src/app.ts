@@ -21,11 +21,14 @@ app.use(
 
 app.use("/upload", uploadFileRouter);
 
-// TODO: Admin only
+// TODO: ServiceWallet only
 app.use("/fund-node", fundNodeRouter);
 app.use("/deploy-bubblegum-tree", deployBubblegumTreeRouter);
 
-// Register the error handling middleware
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
 app.use(errorMiddleware);
 
 if (process.env.NODE_ENV !== "test") {

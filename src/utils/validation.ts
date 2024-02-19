@@ -16,6 +16,7 @@ const isValidLongitude = (longitude: number): boolean => {
 
 const isValidOpeningHourFormat = (hours: string): boolean => {
   // Assuming format like "9am-5pm" or "Closed"
+  // todo: 9:15am-5:30pm must be valid
   const hoursRegex = /^([1-9]|1[0-2])(am|pm)-([1-9]|1[0-2])(am|pm)$|^Closed$/;
   return hoursRegex.test(hours.trim());
 };
