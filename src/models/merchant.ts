@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 
 const merchantSchema = new mongoose.Schema({
   owner: { type: String, required: true },
@@ -7,8 +7,6 @@ const merchantSchema = new mongoose.Schema({
   number: { type: String, required: true },
   postcode: { type: String, required: true },
   country: { type: String, required: true },
-  latitude: { type: Number, required: true },
-  longitude: { type: Number, required: true },
   description: { type: String, required: true },
   city: { type: String, required: true },
   phoneNumber: { type: String, required: true },
@@ -19,9 +17,23 @@ const merchantSchema = new mongoose.Schema({
   timezone: { type: String, required: true },
   image: { type: String, required: false },
   category: { type: String },
+  location: {
+    type: {
+      type: String,
+      enum: ["Point"],
+      required: true,
+    },
+    coordinates: {
+      type: [Number],
+      required: true,
+    },
+  },
 });
 
-// Interface to represent a merchant document in MongoDB
+// Ensure the schema uses 2dsphere index for GeoJSON location field
+merchantSchema.index({ location: "2dsphere" });
+
+// Interface to represent a merchant document in MongoDB, updated with the location field
 export interface MerchantDocument extends Document {
   owner: string;
   name: string;
@@ -29,8 +41,6 @@ export interface MerchantDocument extends Document {
   number: string;
   postcode: string;
   country: string;
-  latitude: number;
-  longitude: number;
   description: string;
   city: string;
   phoneNumber: string;
@@ -38,9 +48,16 @@ export interface MerchantDocument extends Document {
   timezone: string;
   image?: string;
   category?: string;
+  location: {
+    type: string;
+    coordinates: number[];
+  };
 }
 
-export const Merchant = mongoose.model("Merchant", merchantSchema);
+export const Merchant = mongoose.model<MerchantDocument>(
+  "Merchant",
+  merchantSchema
+);
 
 export interface MerchantData {
   owner: string;
@@ -49,14 +66,16 @@ export interface MerchantData {
   number: string;
   postcode: string;
   country: string;
-  latitude: number;
-  longitude: number;
   description: string;
   city: string;
   phoneNumber: string;
   openingHours: { [key: string]: string };
   timezone: string;
   category?: string;
+  location: {
+    type: string;
+    coordinates: number[];
+  };
 }
 
 export interface MerchantMetadata {

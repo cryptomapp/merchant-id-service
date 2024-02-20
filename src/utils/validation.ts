@@ -14,6 +14,15 @@ const isValidLongitude = (longitude: number): boolean => {
   return typeof longitude === "number" && longitude >= -180 && longitude <= 180;
 };
 
+const isValidLocation = (location: {
+  type: string;
+  coordinates: number[];
+}): boolean => {
+  if (!location || location.type !== "Point") return false;
+  const [longitude, latitude] = location.coordinates;
+  return isValidLatitude(latitude) && isValidLongitude(longitude);
+};
+
 const isValidOpeningHourFormat = (hours: string): boolean => {
   // Assuming format like "9am-5pm" or "Closed"
   // todo: 9:15am-5:30pm must be valid
@@ -62,8 +71,7 @@ export const isValidMerchantData = (data: MerchantData): boolean => {
     !isValidAddress(data.country) ||
     !isValidAddress(data.city) ||
     !isValidPhoneNumber(data.phoneNumber) ||
-    !isValidLatitude(data.latitude) ||
-    !isValidLongitude(data.longitude) ||
+    !isValidLocation(data.location) ||
     !hasValidOpeningHours(data.openingHours) ||
     !isValidDescription(data.description) ||
     !isValidTimezone(data.timezone)

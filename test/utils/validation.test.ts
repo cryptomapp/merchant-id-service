@@ -1,17 +1,17 @@
-// src/utils/validation.test.ts
-
 import { isValidMerchantData } from "../../src/utils/validation";
 import { MerchantData } from "../../src/models/merchant";
 
-describe("isValidMerchantData", () => {
+describe.only("isValidMerchantData", () => {
   const baseValidData: MerchantData = {
     name: "Test Store",
     street: "123 Test St",
     number: "10A",
     postcode: "12345",
     country: "Testland",
-    latitude: 40.7128,
-    longitude: -74.006,
+    location: {
+      type: "Point",
+      coordinates: [-74.006, 40.7128], // Note: [longitude, latitude]
+    },
     description: "A test store description that is under 300 characters.",
     city: "Test City",
     phoneNumber: "+12345678901",
