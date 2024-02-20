@@ -27,7 +27,7 @@ export async function generateCategoriesFromDescription(
         {
           role: "system",
           content:
-            "You are a helpful assistant able to detect different languages and selecting the best fitting merchant category",
+            "You are a helpful assistant able to detect different languages and selecting the best fitting merchant category. Give me only category name as a response.",
         },
         {
           role: "user",
