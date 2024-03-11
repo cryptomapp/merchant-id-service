@@ -22,14 +22,13 @@ export const uploadFileService = async (
   console.log("UploadFileService: ", merchantData, imageFile);
 
   // Generate categories based on the merchant's description
-  const category = await generateCategoriesFromDescription(
-    merchantData.description
-  );
+  // const category = await generateCategoriesFromDescription(
+  //   merchantData.description
+  // );
+  const category = "test category - no access to GPT";
 
-  console.log("Getting irys...");
   const irys = await getIrys();
   const imageData = fs.readFileSync(imageFile.path);
-  console.log("Uploading image...");
   const imageReceipt = await irys.upload(imageData);
   const imageUrl = `https://gateway.irys.xyz/${imageReceipt.id}`;
 
@@ -48,6 +47,7 @@ export const uploadFileService = async (
   const metadataUri = `https://gateway.irys.xyz/${metadataReceipt.id}`;
 
   fs.unlinkSync(imageFile.path);
+  // TODO: we should clean temporary image file
 
   console.log("Minting NFT...");
 
