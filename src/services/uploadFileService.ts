@@ -47,7 +47,7 @@ export const uploadFileService = async (
   const metadataUri = `https://gateway.irys.xyz/${metadataReceipt.id}`;
 
   fs.unlinkSync(imageFile.path);
-  // TODO: we should clean temporary image file
+  // TODO: we should delete temporary image file
 
   console.log("Minting NFT...");
 
