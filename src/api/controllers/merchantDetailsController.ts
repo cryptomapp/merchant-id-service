@@ -26,3 +26,19 @@ export const getMerchantDetails = async (req: Request, res: Response) => {
     }
   }
 };
+
+export const getAllMerchants = async (req: Request, res: Response) => {
+  try {
+    // Fetch all merchants from the database
+    const merchants = await Merchant.find({});
+
+    // Send the list of merchants as a response
+    res.status(200).json(merchants);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ message: "Server error", error: error.message });
+    } else {
+      res.status(500).json({ message: "An unknown error occurred" });
+    }
+  }
+};

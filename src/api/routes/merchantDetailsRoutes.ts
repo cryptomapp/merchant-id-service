@@ -1,8 +1,12 @@
 import express from "express";
-import { getMerchantDetails } from "../controllers/merchantDetailsController";
+import {
+  getAllMerchants,
+  getMerchantDetails,
+} from "../controllers/merchantDetailsController";
 
 const router = express.Router();
 
 router.get("/", getMerchantDetails);
+router.get("/all", getAllMerchants);
 
 export default router;
