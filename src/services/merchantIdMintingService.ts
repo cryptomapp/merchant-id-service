@@ -7,19 +7,14 @@ import { mintNFT } from "./nftService";
 import { CryptoMappClient } from "../utils/cryptoMappClient";
 import { generateCategoriesFromDescription } from "./openAiService";
 import { config } from "../config";
-import irys from "@irys/sdk/build/cjs/node/irys";
 
 export const mintMerchantIdAndStoreInMongo = async (
   merchantData: MerchantData,
   imageFile: Express.Multer.File
 ) => {
   try {
-    // Validate merchant data and image file
     if (!isValidMerchantData(merchantData)) {
       throw new Error("Invalid merchant data provided.");
-    }
-    if (!imageFile) {
-      throw new Error("No image provided.");
     }
 
     // Generate categories based on the merchant's description
