@@ -5,9 +5,9 @@ const programDir = path.join(
   "..",
   "..",
   "Solana",
-  "crypto-mapp",
+  "cryptom-protocol",
   "programs",
-  "crypto-mapp"
+  "cryptom-protocol"
 );
 const idlDir = path.join(__dirname, "idl");
 const sdkDir = path.join(__dirname, "src", "generated");
@@ -15,8 +15,8 @@ const binaryInstallDir = path.join(__dirname, ".crates");
 
 module.exports = {
   idlGenerator: "anchor",
-  programName: "crypto_mapp",
-  programId: "8mDhNcko1rByfWLzVTuddx386JFwFnD3oDPWV2pzBckN", // Replace with your actual program ID
+  programName: "cryptom_protocol",
+  programId: "6gVqqXEwoTX7AZTBYQDEaXntMiBPnTAyBbuMCeqk5avi", // Replace with your actual program ID
   idlDir,
   sdkDir,
   binaryInstallDir,

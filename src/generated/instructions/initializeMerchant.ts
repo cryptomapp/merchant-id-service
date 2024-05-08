@@ -72,7 +72,7 @@ export const initializeMerchantInstructionDiscriminator = [
 export function createInitializeMerchantInstruction(
   accounts: InitializeMerchantInstructionAccounts,
   args: InitializeMerchantInstructionArgs,
-  programId = new web3.PublicKey('8mDhNcko1rByfWLzVTuddx386JFwFnD3oDPWV2pzBckN')
+  programId = new web3.PublicKey('6gVqqXEwoTX7AZTBYQDEaXntMiBPnTAyBbuMCeqk5avi')
 ) {
   const [data] = initializeMerchantStruct.serialize({
     instructionDiscriminator: initializeMerchantInstructionDiscriminator,

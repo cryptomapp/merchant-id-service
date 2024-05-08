@@ -18,6 +18,7 @@ export type UserArgs = {
   isInitialized: boolean
   isMerchant: boolean
   expPoints: number
+  usdcAccount: web3.PublicKey
   referrer: beet.COption<web3.PublicKey>
 }
 
@@ -34,6 +35,7 @@ export class User implements UserArgs {
     readonly isInitialized: boolean,
     readonly isMerchant: boolean,
     readonly expPoints: number,
+    readonly usdcAccount: web3.PublicKey,
     readonly referrer: beet.COption<web3.PublicKey>
   ) {}
 
@@ -45,6 +47,7 @@ export class User implements UserArgs {
       args.isInitialized,
       args.isMerchant,
       args.expPoints,
+      args.usdcAccount,
       args.referrer
     )
   }
@@ -89,7 +92,7 @@ export class User implements UserArgs {
    */
   static gpaBuilder(
     programId: web3.PublicKey = new web3.PublicKey(
-      '8mDhNcko1rByfWLzVTuddx386JFwFnD3oDPWV2pzBckN'
+      '6gVqqXEwoTX7AZTBYQDEaXntMiBPnTAyBbuMCeqk5avi'
     )
   ) {
     return beetSolana.GpaBuilder.fromStruct(programId, userBeet)
@@ -157,6 +160,7 @@ export class User implements UserArgs {
       isInitialized: this.isInitialized,
       isMerchant: this.isMerchant,
       expPoints: this.expPoints,
+      usdcAccount: this.usdcAccount.toBase58(),
       referrer: this.referrer,
     }
   }
@@ -177,6 +181,7 @@ export const userBeet = new beet.FixableBeetStruct<
     ['isInitialized', beet.bool],
     ['isMerchant', beet.bool],
     ['expPoints', beet.u32],
+    ['usdcAccount', beetSolana.publicKey],
     ['referrer', beet.coption(beetSolana.publicKey)],
   ],
   User.fromArgs,

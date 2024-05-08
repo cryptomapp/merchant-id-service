@@ -1,6 +1,6 @@
 {
-  "version": "0.1.0",
-  "name": "crypto_mapp",
+  "version": "0.2.0",
+  "name": "cryptom_protocol",
   "instructions": [
     {
       "name": "initialize",
@@ -78,7 +78,10 @@
         {
           "name": "systemProgram",
           "isMut": false,
-          "isSigner": false
+          "isSigner": false,
+          "docs": [
+            "System program is required for creating accounts"
+          ]
         }
       ],
       "args": []
@@ -263,6 +266,16 @@
           "name": "tokenProgram",
           "isMut": false,
           "isSigner": false
+        },
+        {
+          "name": "senderUserAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "receiverUserAccount",
+          "isMut": true,
+          "isSigner": false
         }
       ],
       "args": [
@@ -289,6 +302,11 @@
           "name": "signer",
           "isMut": true,
           "isSigner": true
+        },
+        {
+          "name": "reviewer",
+          "isMut": true,
+          "isSigner": false
         }
       ],
       "args": [
@@ -342,6 +360,10 @@
           {
             "name": "expPoints",
             "type": "u32"
+          },
+          {
+            "name": "usdcAccount",
+            "type": "publicKey"
           },
           {
             "name": "referrer",
@@ -459,7 +481,7 @@
     }
   ],
   "metadata": {
-    "address": "8mDhNcko1rByfWLzVTuddx386JFwFnD3oDPWV2pzBckN",
+    "address": "6gVqqXEwoTX7AZTBYQDEaXntMiBPnTAyBbuMCeqk5avi",
     "origin": "anchor",
     "binaryVersion": "0.29.0",
     "libVersion": "0.29.0"

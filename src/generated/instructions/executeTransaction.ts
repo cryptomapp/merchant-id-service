@@ -41,6 +41,8 @@ export const executeTransactionStruct = new beet.BeetArgsStruct<
  * @property [_writable_] receiverUsdcAccount
  * @property [_writable_] daoUsdcAccount
  * @property [_writable_] state
+ * @property [_writable_] senderUserAccount
+ * @property [_writable_] receiverUserAccount
  * @category Instructions
  * @category ExecuteTransaction
  * @category generated
@@ -52,6 +54,8 @@ export type ExecuteTransactionInstructionAccounts = {
   daoUsdcAccount: web3.PublicKey
   state: web3.PublicKey
   tokenProgram?: web3.PublicKey
+  senderUserAccount: web3.PublicKey
+  receiverUserAccount: web3.PublicKey
   anchorRemainingAccounts?: web3.AccountMeta[]
 }
 
@@ -72,7 +76,7 @@ export const executeTransactionInstructionDiscriminator = [
 export function createExecuteTransactionInstruction(
   accounts: ExecuteTransactionInstructionAccounts,
   args: ExecuteTransactionInstructionArgs,
-  programId = new web3.PublicKey('8mDhNcko1rByfWLzVTuddx386JFwFnD3oDPWV2pzBckN')
+  programId = new web3.PublicKey('6gVqqXEwoTX7AZTBYQDEaXntMiBPnTAyBbuMCeqk5avi')
 ) {
   const [data] = executeTransactionStruct.serialize({
     instructionDiscriminator: executeTransactionInstructionDiscriminator,
@@ -107,6 +111,16 @@ export function createExecuteTransactionInstruction(
     {
       pubkey: accounts.tokenProgram ?? splToken.TOKEN_PROGRAM_ID,
       isWritable: false,
+      isSigner: false,
+    },
+    {
+      pubkey: accounts.senderUserAccount,
+      isWritable: true,
+      isSigner: false,
+    },
+    {
+      pubkey: accounts.receiverUserAccount,
+      isWritable: true,
       isSigner: false,
     },
   ]

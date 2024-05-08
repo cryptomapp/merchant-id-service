@@ -1,7 +1,7 @@
 import request from "supertest";
 import app from "../src/app";
 import path from "path";
-import { uploadFileService } from "../src/services/uploadFileService";
+import { uploadFileService } from "../src/services/merchantIdMintingService";
 
 jest.mock("../src/services/uploadFileService");
 

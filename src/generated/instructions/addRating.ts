@@ -38,6 +38,7 @@ export const addRatingStruct = new beet.BeetArgsStruct<
  * @property [_writable_] merchant
  * @property [_writable_] state
  * @property [_writable_, **signer**] signer
+ * @property [_writable_] reviewer
  * @category Instructions
  * @category AddRating
  * @category generated
@@ -46,6 +47,7 @@ export type AddRatingInstructionAccounts = {
   merchant: web3.PublicKey
   state: web3.PublicKey
   signer: web3.PublicKey
+  reviewer: web3.PublicKey
   anchorRemainingAccounts?: web3.AccountMeta[]
 }
 
@@ -66,7 +68,7 @@ export const addRatingInstructionDiscriminator = [
 export function createAddRatingInstruction(
   accounts: AddRatingInstructionAccounts,
   args: AddRatingInstructionArgs,
-  programId = new web3.PublicKey('8mDhNcko1rByfWLzVTuddx386JFwFnD3oDPWV2pzBckN')
+  programId = new web3.PublicKey('6gVqqXEwoTX7AZTBYQDEaXntMiBPnTAyBbuMCeqk5avi')
 ) {
   const [data] = addRatingStruct.serialize({
     instructionDiscriminator: addRatingInstructionDiscriminator,
@@ -87,6 +89,11 @@ export function createAddRatingInstruction(
       pubkey: accounts.signer,
       isWritable: true,
       isSigner: true,
+    },
+    {
+      pubkey: accounts.reviewer,
+      isWritable: true,
+      isSigner: false,
     },
   ]
 
