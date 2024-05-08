@@ -12,6 +12,17 @@ const openai = new OpenAI({
   apiKey: config.openAiApiKey,
 });
 
+export async function loadCategories(): Promise<string[]> {
+  const filePath = path.join(__dirname, "../config/categories.json");
+  try {
+    const data = await fs.promises.readFile(filePath, "utf8");
+    return JSON.parse(data);
+  } catch (error) {
+    console.error("Failed to load categories:", error);
+    return [];
+  }
+}
+
 /**
  * Generates a category based on the provided description.
  * @param description - The merchant's description.
@@ -19,33 +30,35 @@ const openai = new OpenAI({
  */
 export async function generateCategoriesFromDescription(
   description: string
-): Promise<string> {
+): Promise<string[]> {
   try {
+    const categories = await loadCategories();
+    const prompt = `Based on the description "${description}", list the most relevant categories from: ${categories.join(
+      ", "
+    )}.`;
+
     const chatCompletion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [
         {
           role: "system",
           content:
-            "You are a helpful assistant able to detect different languages and selecting the best fitting merchant category. Give me only category name as a response.",
+            "List the best matching categories from the given list based on the description. Max 3 in form of cat1, cat2, cat3.",
         },
-        {
-          role: "user",
-          content: `Given the description "${description}", identify the most fitting category from the following list: ${categories}.`,
-        },
+        { role: "user", content: prompt },
       ],
     });
 
-    // Extract the text response directly without assuming JSON structure
     const responseContent =
-      chatCompletion.choices[0]?.message?.content?.trim() ?? "unknown";
+      chatCompletion.choices[0]?.message?.content?.trim() ?? "";
 
-    console.log("Response category:", responseContent);
+    console.log(responseContent);
+    const responseCategories = responseContent.split(", ");
 
-    // Directly return the response without filtering, assuming it provides a valid category
-    return responseContent; // If you need to ensure the response is within your categories, you can still perform a check here
+    console.log("Response categories:", responseCategories);
+    return responseCategories;
   } catch (error) {
-    console.error("Error generating category:", error);
-    return "error"; // Return a default or error indicator as appropriate
+    console.error("Error generating categories:", error);
+    return []; // Return an empty array on error
   }
 }

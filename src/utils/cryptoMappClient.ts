@@ -23,7 +23,7 @@ export class CryptoMappClient {
   private constructor() {
     this.connection = new Connection(clusterApiUrl("devnet"), "confirmed");
     this.programId = new PublicKey(PROGRAM_ID);
-    const secretKeyUint8Array = bs58.decode(config.solPrivateKey);
+    const secretKeyUint8Array = bs58.decode(config.solPrivateKey!);
     this.serviceWallet = Keypair.fromSecretKey(secretKeyUint8Array);
     this.stateAddress = new PublicKey(config.stateAddress);
   }
