@@ -57,7 +57,7 @@ export const initializeUserWithReferrerInstructionDiscriminator = [
  */
 export function createInitializeUserWithReferrerInstruction(
   accounts: InitializeUserWithReferrerInstructionAccounts,
-  programId = new web3.PublicKey('8mDhNcko1rByfWLzVTuddx386JFwFnD3oDPWV2pzBckN')
+  programId = new web3.PublicKey('6gVqqXEwoTX7AZTBYQDEaXntMiBPnTAyBbuMCeqk5avi')
 ) {
   const [data] = initializeUserWithReferrerStruct.serialize({
     instructionDiscriminator:

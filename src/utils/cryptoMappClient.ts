@@ -8,8 +8,12 @@ import {
 } from "@solana/web3.js";
 import { ProgramState } from "../generated/accounts/ProgramState";
 import { createInitializeMerchantInstruction } from "../generated/instructions/initializeMerchant";
-import { CnftIdentifier, PROGRAM_ID } from "../generated";
-import fs from "fs";
+import {
+  CnftIdentifier,
+  PROGRAM_ID,
+  User,
+  createInitializeMerchantWithReferrerInstruction,
+} from "../generated";
 import bs58 from "bs58";
 import { config } from "../config";
 
@@ -20,10 +24,17 @@ export class CryptoMappClient {
   private stateAddress: PublicKey;
   private serviceWallet: Keypair;
 
+  calculatePDA(publicKey: PublicKey, seedPrefix: string): [PublicKey, number] {
+    const seeds = seedPrefix
+      ? [Buffer.from(seedPrefix), publicKey.toBuffer()]
+      : [publicKey.toBuffer()];
+    return PublicKey.findProgramAddressSync(seeds, this.programId);
+  }
+
   private constructor() {
     this.connection = new Connection(clusterApiUrl("devnet"), "confirmed");
     this.programId = new PublicKey(PROGRAM_ID);
-    const secretKeyUint8Array = bs58.decode(config.solPrivateKey);
+    const secretKeyUint8Array = bs58.decode(config.solPrivateKey!);
     this.serviceWallet = Keypair.fromSecretKey(secretKeyUint8Array);
     this.stateAddress = new PublicKey(config.stateAddress);
   }
@@ -44,6 +55,26 @@ export class CryptoMappClient {
     const programState = ProgramState.deserialize(accountInfo.data)[0];
 
     return programState.merchantCounter;
+  }
+
+  async getReferrerPublicKey(
+    userPublicKey: PublicKey
+  ): Promise<PublicKey | null> {
+    try {
+      // Calculate the PDA for the user account
+      const [userAccountPDA] = this.calculatePDA(userPublicKey, "user");
+
+      // Fetch the user account data
+      const user = await User.fromAccountAddress(
+        this.connection,
+        userAccountPDA
+      );
+
+      return user.referrer;
+    } catch (error) {
+      console.error("Error in getUser:", error);
+      throw error;
+    }
   }
 
   public async callInitializeMerchant(
@@ -80,25 +111,80 @@ export class CryptoMappClient {
       }
     );
 
-    console.log("after instruction");
-
     const transaction = new Transaction().add(instruction);
-    console.log("after transaction");
 
     // Fetch a recent blockhash
     const recentBlockhash = await this.connection.getRecentBlockhash();
     transaction.recentBlockhash = recentBlockhash.blockhash;
 
     transaction.sign(this.serviceWallet);
-    console.log("after sign");
 
     const serializedTransaction = transaction.serialize();
-    console.log("after serialize");
 
     const signature = await this.connection.sendRawTransaction(
       serializedTransaction
     );
-    console.log("after sendRawTransaction");
+
+    await this.connection.confirmTransaction(signature, "confirmed");
+    return signature;
+  }
+
+  public async callInitializeMerchantWithReferrer(
+    userPublicKeyString: string,
+    referrerPublicKeyString: string,
+    nftIdentifierArray: [string, number]
+  ): Promise<string> {
+    const userPublicKey = new PublicKey(userPublicKeyString);
+    const referrerPublicKey = new PublicKey(referrerPublicKeyString);
+    // Calculate the PDA for the user account
+    const [userPda] = await calculatePDA(this.programId, userPublicKey, "user");
+    const [referrerPda] = await calculatePDA(
+      this.programId,
+      referrerPublicKey,
+      "user"
+    );
+
+    // Calculate the PDA for the merchant account
+    const [merchantPda] = await calculatePDA(
+      this.programId,
+      userPublicKey,
+      "merchant"
+    );
+
+    const nftIdentifier: CnftIdentifier = {
+      merkleTreeAddress: new PublicKey(nftIdentifierArray[0]),
+      leafIndex: nftIdentifierArray[1],
+    };
+
+    const instruction = createInitializeMerchantWithReferrerInstruction(
+      {
+        merchantAccount: merchantPda,
+        userAccount: userPda,
+        userPubkey: userPublicKey,
+        referrerAccount: referrerPda,
+        referrer: referrerPublicKey,
+        serviceWallet: this.serviceWallet.publicKey,
+        state: this.stateAddress,
+        systemProgram: SystemProgram.programId,
+      },
+      {
+        nftIdentifier: nftIdentifier,
+      }
+    );
+
+    const transaction = new Transaction().add(instruction);
+
+    // Fetch a recent blockhash
+    const recentBlockhash = await this.connection.getRecentBlockhash();
+    transaction.recentBlockhash = recentBlockhash.blockhash;
+
+    transaction.sign(this.serviceWallet);
+
+    const serializedTransaction = transaction.serialize();
+
+    const signature = await this.connection.sendRawTransaction(
+      serializedTransaction
+    );
 
     await this.connection.confirmTransaction(signature, "confirmed");
     return signature;

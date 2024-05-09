@@ -16,7 +16,7 @@ const merchantSchema = new mongoose.Schema({
   },
   timezone: { type: String, required: true },
   image: { type: String, required: false },
-  category: { type: String },
+  categories: { type: [String], required: true },
   location: {
     type: {
       type: String,
@@ -32,6 +32,10 @@ const merchantSchema = new mongoose.Schema({
 
 // Ensure the schema uses 2dsphere index for GeoJSON location field
 merchantSchema.index({ location: "2dsphere" });
+merchantSchema.index(
+  { name: "text", description: "text", categories: "text" },
+  { default_language: "none" }
+);
 
 // Interface to represent a merchant document in MongoDB, updated with the location field
 export interface MerchantDocument extends Document {
@@ -47,7 +51,7 @@ export interface MerchantDocument extends Document {
   openingHours: Map<string, string>;
   timezone: string;
   image?: string;
-  category?: string;
+  categories?: string[];
   location: {
     type: string;
     coordinates: number[];
@@ -71,7 +75,7 @@ export interface MerchantData {
   phoneNumber: string;
   openingHours: { [key: string]: string };
   timezone: string;
-  category?: string;
+  categories?: string[];
   location: {
     type: string;
     coordinates: number[];

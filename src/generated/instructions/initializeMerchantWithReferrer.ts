@@ -76,7 +76,7 @@ export const initializeMerchantWithReferrerInstructionDiscriminator = [
 export function createInitializeMerchantWithReferrerInstruction(
   accounts: InitializeMerchantWithReferrerInstructionAccounts,
   args: InitializeMerchantWithReferrerInstructionArgs,
-  programId = new web3.PublicKey('8mDhNcko1rByfWLzVTuddx386JFwFnD3oDPWV2pzBckN')
+  programId = new web3.PublicKey('6gVqqXEwoTX7AZTBYQDEaXntMiBPnTAyBbuMCeqk5avi')
 ) {
   const [data] = initializeMerchantWithReferrerStruct.serialize({
     instructionDiscriminator:

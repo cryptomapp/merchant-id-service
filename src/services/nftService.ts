@@ -50,7 +50,7 @@ export async function mintNFT(
   console.log("mintNFT - id: ", id);
 
   // Decode the Base58 private key for the creator (your wallet)
-  const creatorSecretKeyUint8Array = bs58.decode(config.solPrivateKey);
+  const creatorSecretKeyUint8Array = bs58.decode(config.solPrivateKey!);
   const creatorSigner = umi.eddsa.createKeypairFromSecretKey(
     creatorSecretKeyUint8Array
   );

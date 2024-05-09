@@ -1,6 +1,5 @@
 import Jimp from "jimp";
 import { getIrys } from "../services/irysService";
-import fs from "fs";
 
 const colors = [
   "#fbf8cc",
@@ -26,9 +25,6 @@ export async function generateImage(id: number): Promise<string> {
         image.blit(cell, x * cellSize, y * cellSize);
       }
     }
-
-    console.log("My directory: ", __dirname);
-    console.log("ls in directory: ", fs.readdirSync(__dirname));
 
     const blueprint = await Jimp.read("./dist/images/blueprint.png");
     blueprint.resize(800, 800);

@@ -9,7 +9,7 @@ export const deployBubblegumTreeService = async (
   maxBufferSize: number
 ): Promise<string> => {
   const umi = createUmi(config.solanaProviderUrl);
-  const secretKeyUint8Array = bs58.decode(config.solPrivateKey);
+  const secretKeyUint8Array = bs58.decode(config.solPrivateKey!);
   const signer = umi.eddsa.createKeypairFromSecretKey(secretKeyUint8Array);
   umi.use(keypairIdentity(signer));
 
