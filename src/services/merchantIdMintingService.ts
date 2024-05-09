@@ -76,7 +76,6 @@ export const mintMerchantIdAndStoreInMongo = async (
       const cryptoMappClient = CryptoMappClient.getInstance();
       const id = await cryptoMappClient.getMerchantCounter();
       const merkleTreeAddress = config.bubblegumTreeAddress;
-      console.log(merkleTreeAddress);
       mintResult = await mintNFT(
         metadataUri,
         id,

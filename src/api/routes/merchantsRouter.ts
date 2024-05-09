@@ -1,6 +1,11 @@
 import express from "express";
 import multer from "multer";
 import { beginRegistrationProcess } from "../controllers/becomeMerchantController";
+import {
+  discoverMerchants,
+  getAllMerchants,
+  getMerchantDetails,
+} from "../controllers/merchantDetailsController";
 
 const router = express.Router();
 
@@ -16,11 +21,12 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+router.get("/", getMerchantDetails);
+router.get("/all", getAllMerchants);
+router.get("/discover", discoverMerchants);
+
 // Become a Merchant Flow
 router.post("/become", upload.single("image"), beginRegistrationProcess);
-
-// Discover Merchants by name, category, keyword + location
-router.get("/discover");
 
 // Get Merchants
 router.get("/");

@@ -32,6 +32,10 @@ const merchantSchema = new mongoose.Schema({
 
 // Ensure the schema uses 2dsphere index for GeoJSON location field
 merchantSchema.index({ location: "2dsphere" });
+merchantSchema.index(
+  { name: "text", description: "text", categories: "text" },
+  { default_language: "none" }
+);
 
 // Interface to represent a merchant document in MongoDB, updated with the location field
 export interface MerchantDocument extends Document {
