@@ -16,7 +16,7 @@ const merchantSchema = new mongoose.Schema({
   },
   timezone: { type: String, required: true },
   image: { type: String, required: false },
-  category: { type: String },
+  categories: { type: [String], required: true },
   location: {
     type: {
       type: String,
@@ -47,7 +47,7 @@ export interface MerchantDocument extends Document {
   openingHours: Map<string, string>;
   timezone: string;
   image?: string;
-  category?: string;
+  categories?: string[];
   location: {
     type: string;
     coordinates: number[];
@@ -71,7 +71,7 @@ export interface MerchantData {
   phoneNumber: string;
   openingHours: { [key: string]: string };
   timezone: string;
-  category?: string;
+  categories?: string[];
   location: {
     type: string;
     coordinates: number[];

@@ -23,10 +23,10 @@ export const config = {
 
   solanaProviderUrl:
     process.env.SOLANA_PROVIDER_URL || "https://api.devnet.solana.com",
-  solPrivateKey: createBase58Keypair(process.env.SERVICE_WALLET),
+  solPrivateKey: createBase58Keypair(process.env.SERVICE_WALLET_SECRET_KEY),
 
   bubblegumTreeAddress:
-    process.env.MERKLE_TREE_ADDRESS ||
+    process.env.MERCHANT_ID_MERKLE_TREE_ADDRESS ||
     "CdpanipvRBte9gEAhxryXhGCMkv6fY5R1Z8qvgqaJP5F",
   stateAddress: process.env.STATE_ADDRESS || "",
 

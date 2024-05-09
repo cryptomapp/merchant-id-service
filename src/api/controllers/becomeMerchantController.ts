@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { mintMerchantIdAndStoreInMongo } from "../../services/merchantIdMintingService";
 
 export const beginRegistrationProcess = async (req: Request, res: Response) => {
-  console.log("Began registration process, req body: ", req.body);
   try {
     const merchantData = JSON.parse(req.body.data);
     const imageFile = req.file;

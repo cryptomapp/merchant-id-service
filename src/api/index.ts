@@ -1,5 +1,4 @@
-import fundNodeRouter from "./routes/fundNodeRoutes";
+import fundNodeRouter from "./routes/serviceRoutes";
 import uploadFileRouter from "./routes/merchantsRouter";
-import deployBubblegumTreeRouter from "./routes/deployBubblegumTreeRoutes";
 
-export { fundNodeRouter, uploadFileRouter, deployBubblegumTreeRouter };
+export { fundNodeRouter, uploadFileRouter };

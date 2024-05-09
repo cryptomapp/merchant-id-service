@@ -51,11 +51,8 @@ export async function generateCategoriesFromDescription(
 
     const responseContent =
       chatCompletion.choices[0]?.message?.content?.trim() ?? "";
-
-    console.log(responseContent);
     const responseCategories = responseContent.split(", ");
 
-    console.log("Response categories:", responseCategories);
     return responseCategories;
   } catch (error) {
     console.error("Error generating categories:", error);

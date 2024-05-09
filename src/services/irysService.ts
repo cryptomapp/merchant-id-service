@@ -8,5 +8,6 @@ export const getIrys = async () => {
     key: config.solPrivateKey,
     config: { providerUrl: config.solanaProviderUrl },
   });
+
   return irys;
 };
