@@ -1,10 +1,12 @@
 import {
+  ComputeBudgetProgram,
   Connection,
   Keypair,
   PublicKey,
   SystemProgram,
   Transaction,
   clusterApiUrl,
+  sendAndConfirmTransaction,
 } from "@solana/web3.js";
 import { ProgramState } from "../generated/accounts/ProgramState";
 import { createInitializeMerchantInstruction } from "../generated/instructions/initializeMerchant";
@@ -32,7 +34,7 @@ export class CryptoMappClient {
   }
 
   private constructor() {
-    this.connection = new Connection(clusterApiUrl("devnet"), "confirmed");
+    this.connection = new Connection(config.solanaProviderUrl, "confirmed");
     this.programId = new PublicKey(PROGRAM_ID);
     const secretKeyUint8Array = bs58.decode(config.solPrivateKey!);
     this.serviceWallet = Keypair.fromSecretKey(secretKeyUint8Array);
@@ -114,18 +116,29 @@ export class CryptoMappClient {
     const transaction = new Transaction().add(instruction);
 
     // Fetch a recent blockhash
-    const recentBlockhash = await this.connection.getRecentBlockhash();
+    const recentBlockhash = await this.connection.getLatestBlockhash();
     transaction.recentBlockhash = recentBlockhash.blockhash;
+
+    // Add priority fee
+    const modifyComputeUnits = ComputeBudgetProgram.setComputeUnitLimit({
+      units: 100_000,
+    });
+
+    const addPriorityFee = ComputeBudgetProgram.setComputeUnitPrice({
+      microLamports: 10_000,
+    });
+
+    transaction.add(modifyComputeUnits);
+    transaction.add(addPriorityFee);
 
     transaction.sign(this.serviceWallet);
 
-    const serializedTransaction = transaction.serialize();
-
-    const signature = await this.connection.sendRawTransaction(
-      serializedTransaction
+    const signature = await sendAndConfirmTransaction(
+      this.connection,
+      transaction,
+      [this.serviceWallet]
     );
 
-    await this.connection.confirmTransaction(signature, "confirmed");
     return signature;
   }
 
@@ -175,18 +188,29 @@ export class CryptoMappClient {
     const transaction = new Transaction().add(instruction);
 
     // Fetch a recent blockhash
-    const recentBlockhash = await this.connection.getRecentBlockhash();
+    const recentBlockhash = await this.connection.getLatestBlockhash();
     transaction.recentBlockhash = recentBlockhash.blockhash;
+
+    // Add priority fee
+    const modifyComputeUnits = ComputeBudgetProgram.setComputeUnitLimit({
+      units: 100_000,
+    });
+
+    const addPriorityFee = ComputeBudgetProgram.setComputeUnitPrice({
+      microLamports: 10_000,
+    });
+
+    transaction.add(modifyComputeUnits);
+    transaction.add(addPriorityFee);
 
     transaction.sign(this.serviceWallet);
 
-    const serializedTransaction = transaction.serialize();
-
-    const signature = await this.connection.sendRawTransaction(
-      serializedTransaction
+    const signature = await sendAndConfirmTransaction(
+      this.connection,
+      transaction,
+      [this.serviceWallet]
     );
 
-    await this.connection.confirmTransaction(signature, "confirmed");
     return signature;
   }
 }

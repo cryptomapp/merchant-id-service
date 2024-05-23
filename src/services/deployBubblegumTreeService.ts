@@ -8,6 +8,9 @@ export const deployBubblegumTreeService = async (
   maxDepth: number,
   maxBufferSize: number
 ): Promise<string> => {
+  const canopyDepth = 11;
+
+  console.log("Deploying new tree with RPC: ", config.solanaProviderUrl);
   const umi = createUmi(config.solanaProviderUrl);
   const secretKeyUint8Array = bs58.decode(config.solPrivateKey!);
   const signer = umi.eddsa.createKeypairFromSecretKey(secretKeyUint8Array);
@@ -18,6 +21,7 @@ export const deployBubblegumTreeService = async (
     merkleTree,
     maxDepth,
     maxBufferSize,
+    canopyDepth,
   });
   await builder.sendAndConfirm(umi);
 

@@ -18,6 +18,7 @@ export const mintMerchantIdAndStoreInMongo = async (
       throw new Error("Invalid merchant data provided.");
     }
 
+    console.log("start process");
     // Generate categories based on the merchant's description
     let categories = [];
     try {
@@ -31,6 +32,8 @@ export const mintMerchantIdAndStoreInMongo = async (
         throw new Error("Unknown error generating categories.");
       }
     }
+
+    console.log("generated category: ", categories);
 
     // Upload image to Arweave with Irys SDK
     const irys = await getIrys();
@@ -47,6 +50,8 @@ export const mintMerchantIdAndStoreInMongo = async (
         throw new Error("Unknown error uploading to Arweave.");
       }
     }
+
+    console.log("stored image");
 
     // Prepare and upload metadata
     const cryptoMappClient = CryptoMappClient.getInstance();
@@ -70,6 +75,8 @@ export const mintMerchantIdAndStoreInMongo = async (
       }
     }
 
+    console.log("stored metadata");
+
     // Mint NFT
     let mintResult: [string, number];
     try {
@@ -89,6 +96,8 @@ export const mintMerchantIdAndStoreInMongo = async (
         throw new Error("Unknown error during NFT minting.");
       }
     }
+
+    console.log("minted nft");
 
     // Save merchant data to Mongo
     try {

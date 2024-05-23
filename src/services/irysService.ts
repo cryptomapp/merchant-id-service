@@ -3,10 +3,10 @@ import { config } from "../config";
 
 export const getIrys = async () => {
   const irys = new Irys({
-    url: config.irysUrl,
+    network: "mainnet",
     token: "solana",
     key: config.solPrivateKey,
-    config: { providerUrl: config.solanaProviderUrl },
+    // config: { providerUrl: config.solanaProviderUrl },
   });
 
   return irys;

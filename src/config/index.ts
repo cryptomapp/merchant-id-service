@@ -21,8 +21,7 @@ export const config = {
 
   irysUrl: process.env.IRYS_URL || "https://devnet.irys.xyz",
 
-  solanaProviderUrl:
-    process.env.SOLANA_PROVIDER_URL || "https://api.devnet.solana.com",
+  solanaProviderUrl: process.env.SOLANA_RPC || "https://api.devnet.solana.com",
   solPrivateKey: createBase58Keypair(process.env.SERVICE_WALLET_SECRET_KEY),
 
   bubblegumTreeAddress:
