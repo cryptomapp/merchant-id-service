@@ -3,6 +3,7 @@ import {
   keypairIdentity,
   none,
   publicKey,
+  transactionBuilder,
 } from "@metaplex-foundation/umi";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 import { config } from "../config";
@@ -65,31 +66,41 @@ export async function mintNFT(
 
   console.log("created leafOwnerPublicKey");
 
+  const builder = transactionBuilder().add(
+    setComputeUnitLimit(umi, { units: 10_000 })
+  );
+
   // Mint the cNFT for the specified leaf owner
-  const { signature } = await mintV1(umi, {
-    leafOwner: leafOwnerPublicKey,
-    merkleTree: merkleTreePublicKey,
-    metadata: {
-      name: `MerchantID #${id}`,
-      uri: metadataUri,
-      sellerFeeBasisPoints: 10000,
-      collection: none(),
-      creators: [
-        { address: creatorSigner.publicKey, verified: true, share: 100 },
-      ],
-    },
-  }).sendAndConfirm(umi, { confirm: { commitment: "confirmed" } });
+  const signature = builder
+    .add(
+      mintV1(umi, {
+        leafOwner: leafOwnerPublicKey,
+        merkleTree: merkleTreePublicKey,
+        metadata: {
+          name: `MerchantID #${id}`,
+          uri: metadataUri,
+          sellerFeeBasisPoints: 10000,
+          collection: none(),
+          creators: [
+            { address: creatorSigner.publicKey, verified: true, share: 100 },
+          ],
+        },
+      })
+    )
+    .sendAndConfirm(umi, { confirm: { commitment: "confirmed" } });
 
   console.log("minted cNFT");
 
-  await ensureTransactionConfirmed(umi, signature);
+  await ensureTransactionConfirmed(umi, (await signature).signature);
 
   console.log("confirmed transaction");
 
   try {
     const leaf: LeafSchema = await parseLeafFromMintV1Transaction(
       umi,
-      signature
+      (
+        await signature
+      ).signature
     );
     const assetIdPda = findLeafAssetIdPda(umi, {
       merkleTree: merkleTreePublicKey,
@@ -104,4 +115,10 @@ export async function mintNFT(
     console.error("Error parsing leaf from mint transaction:", error);
     throw error;
   }
+}
+function setComputeUnitLimit(
+  umi: Umi,
+  arg1: { units: number }
+): import("@metaplex-foundation/umi").TransactionBuilderItemsInput {
+  throw new Error("Function not implemented.");
 }
