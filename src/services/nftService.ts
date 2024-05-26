@@ -3,7 +3,6 @@ import {
   keypairIdentity,
   none,
   publicKey,
-  transactionBuilder,
 } from "@metaplex-foundation/umi";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 import { config } from "../config";
@@ -14,17 +13,23 @@ import {
   mintV1,
   parseLeafFromMintV1Transaction,
 } from "@metaplex-foundation/mpl-bubblegum";
+import {
+  setComputeUnitLimit,
+  setComputeUnitPrice,
+} from "@metaplex-foundation/mpl-toolbox";
 
 async function ensureTransactionConfirmed(umi: Umi, signature: Uint8Array) {
   let confirmed = false;
-  const maxAttempts = 10;
-  const delayMs = 2000;
+  const maxAttempts = 15;
+  const delayMs = 1000;
 
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
+      console.log("Attempt #", attempt);
       const transaction = await umi.rpc.getTransaction(signature, {
         commitment: "finalized",
       });
+      console.log(transaction);
       if (transaction) {
         confirmed = true;
         break;
@@ -66,41 +71,34 @@ export async function mintNFT(
 
   console.log("created leafOwnerPublicKey");
 
-  const builder = transactionBuilder().add(
-    setComputeUnitLimit(umi, { units: 10_000 })
-  );
-
   // Mint the cNFT for the specified leaf owner
-  const signature = builder
-    .add(
-      mintV1(umi, {
-        leafOwner: leafOwnerPublicKey,
-        merkleTree: merkleTreePublicKey,
-        metadata: {
-          name: `MerchantID #${id}`,
-          uri: metadataUri,
-          sellerFeeBasisPoints: 10000,
-          collection: none(),
-          creators: [
-            { address: creatorSigner.publicKey, verified: true, share: 100 },
-          ],
-        },
-      })
-    )
+  const { signature } = await mintV1(umi, {
+    leafOwner: leafOwnerPublicKey,
+    merkleTree: merkleTreePublicKey,
+    metadata: {
+      name: `MerchantID #${id}`,
+      uri: metadataUri,
+      sellerFeeBasisPoints: 10000,
+      collection: none(),
+      creators: [
+        { address: creatorSigner.publicKey, verified: true, share: 100 },
+      ],
+    },
+  })
+    .add(setComputeUnitPrice(umi, { microLamports: 10_000 }))
+    .add(setComputeUnitLimit(umi, { units: 100_000 }))
     .sendAndConfirm(umi, { confirm: { commitment: "confirmed" } });
 
   console.log("minted cNFT");
 
-  await ensureTransactionConfirmed(umi, (await signature).signature);
+  await ensureTransactionConfirmed(umi, signature);
 
   console.log("confirmed transaction");
 
   try {
     const leaf: LeafSchema = await parseLeafFromMintV1Transaction(
       umi,
-      (
-        await signature
-      ).signature
+      signature
     );
     const assetIdPda = findLeafAssetIdPda(umi, {
       merkleTree: merkleTreePublicKey,
@@ -115,10 +113,4 @@ export async function mintNFT(
     console.error("Error parsing leaf from mint transaction:", error);
     throw error;
   }
-}
-function setComputeUnitLimit(
-  umi: Umi,
-  arg1: { units: number }
-): import("@metaplex-foundation/umi").TransactionBuilderItemsInput {
-  throw new Error("Function not implemented.");
 }
