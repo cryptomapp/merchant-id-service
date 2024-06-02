@@ -72,7 +72,6 @@ export interface MerchantData {
   country: string;
   description: string;
   city: string;
-  phoneNumber: string;
   openingHours: { [key: string]: string };
   timezone: string;
   categories?: string[];
