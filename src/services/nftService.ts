@@ -21,13 +21,13 @@ import {
 async function ensureTransactionConfirmed(umi: Umi, signature: Uint8Array) {
   let confirmed = false;
   const maxAttempts = 15;
-  const delayMs = 1000;
+  const delayMs = 2000;
 
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
       console.log("Attempt #", attempt);
       const transaction = await umi.rpc.getTransaction(signature, {
-        commitment: "finalized",
+        commitment: "confirmed",
       });
       console.log(transaction);
       if (transaction) {
