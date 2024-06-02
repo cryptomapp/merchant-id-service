@@ -99,13 +99,14 @@ export const mintMerchantIdAndStoreInMongo = async (
 
     console.log("minted nft");
 
+    console.log("merchantData: ", merchantData);
+
     // Save merchant data to Mongo
     try {
       const newMerchant = new Merchant({
         ...merchantData,
         image: imageUrl,
         categories,
-        phoneNumber: "",
       });
       await newMerchant.save();
     } catch (mongoError) {
