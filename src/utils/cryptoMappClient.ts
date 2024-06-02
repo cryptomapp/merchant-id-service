@@ -125,7 +125,7 @@ export class CryptoMappClient {
     });
 
     const addPriorityFee = ComputeBudgetProgram.setComputeUnitPrice({
-      microLamports: 10_000,
+      microLamports: 100_000,
     });
 
     transaction.add(modifyComputeUnits);
@@ -197,7 +197,7 @@ export class CryptoMappClient {
     });
 
     const addPriorityFee = ComputeBudgetProgram.setComputeUnitPrice({
-      microLamports: 10_000,
+      microLamports: 100_000,
     });
 
     transaction.add(modifyComputeUnits);

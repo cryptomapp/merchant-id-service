@@ -85,7 +85,7 @@ export async function mintNFT(
       ],
     },
   })
-    .add(setComputeUnitPrice(umi, { microLamports: 10_000 }))
+    .add(setComputeUnitPrice(umi, { microLamports: 100_000 }))
     .add(setComputeUnitLimit(umi, { units: 100_000 }))
     .sendAndConfirm(umi, { confirm: { commitment: "confirmed" } });
 
