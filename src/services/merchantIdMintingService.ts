@@ -105,6 +105,7 @@ export const mintMerchantIdAndStoreInMongo = async (
         ...merchantData,
         image: imageUrl,
         categories,
+        phoneNumber: "",
       });
       await newMerchant.save();
     } catch (mongoError) {
