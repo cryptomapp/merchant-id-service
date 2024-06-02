@@ -27,7 +27,7 @@ async function ensureTransactionConfirmed(umi: Umi, signature: Uint8Array) {
     try {
       console.log("Attempt #", attempt);
       const transaction = await umi.rpc.getTransaction(signature, {
-        commitment: "confirmed",
+        commitment: "finalized",
       });
       console.log(transaction);
       if (transaction) {
@@ -100,6 +100,8 @@ export async function mintNFT(
       umi,
       signature
     );
+
+    console.log("leaf: ", leaf);
     const assetIdPda = findLeafAssetIdPda(umi, {
       merkleTree: merkleTreePublicKey,
       leafIndex: BigInt(leaf.nonce),
