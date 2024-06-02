@@ -52,11 +52,6 @@ const isValidTimezone = (timezone: string): boolean => {
   return moment.tz.zone(timezone) ? true : false; // Check if the timezone is known to moment-timezone
 };
 
-const isValidPhoneNumber = (phoneNumber: string): boolean => {
-  const phone = parsePhoneNumberFromString(phoneNumber);
-  return phone ? phone.isValid() : false;
-};
-
 const isValidDescription = (description: string): boolean => {
   const trimmedDescription = description.trim();
   return trimmedDescription.length >= 50 && trimmedDescription.length <= 500;
@@ -70,7 +65,6 @@ export const isValidMerchantData = (data: MerchantData): boolean => {
     !isValidAddress(data.postcode) ||
     !isValidAddress(data.country) ||
     !isValidAddress(data.city) ||
-    !isValidPhoneNumber(data.phoneNumber) ||
     !isValidLocation(data.location) ||
     !hasValidOpeningHours(data.openingHours) ||
     !isValidDescription(data.description) ||
