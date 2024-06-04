@@ -1,281 +1,118 @@
 {
-  "version": "0.2.0",
-  "name": "cryptom_protocol",
+  "address": "6gVqqXEwoTX7AZTBYQDEaXntMiBPnTAyBbuMCeqk5avi",
+  "metadata": {
+    "name": "cryptom_protocol",
+    "version": "0.2.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor",
+    "address": "6gVqqXEwoTX7AZTBYQDEaXntMiBPnTAyBbuMCeqk5avi",
+    "origin": "anchor",
+    "binaryVersion": "0.30.0",
+    "libVersion": "0.30.0"
+  },
   "instructions": [
     {
-      "name": "initialize",
+      "name": "add_rating",
+      "discriminator": [
+        178,
+        122,
+        141,
+        23,
+        38,
+        141,
+        48,
+        29
+      ],
       "accounts": [
         {
+          "name": "merchant",
+          "writable": true
+        },
+        {
           "name": "state",
-          "isMut": true,
-          "isSigner": true
+          "writable": true
         },
         {
-          "name": "user",
-          "isMut": true,
-          "isSigner": true
+          "name": "signer",
+          "writable": true,
+          "signer": true
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          "name": "reviewer",
+          "writable": true
         }
       ],
       "args": [
         {
-          "name": "usdcMint",
-          "type": "publicKey"
-        },
-        {
-          "name": "transactionFeePercentage",
+          "name": "rating",
           "type": "u8"
-        },
-        {
-          "name": "daoPubkey",
-          "type": "publicKey"
-        },
-        {
-          "name": "onboardingServiceWalletPubkey",
-          "type": "publicKey"
-        },
-        {
-          "name": "merchantIdServiceWalletPubkey",
-          "type": "publicKey"
-        },
-        {
-          "name": "transactionServiceWalletPubkey",
-          "type": "publicKey"
-        },
-        {
-          "name": "reviewServiceWalletPubkey",
-          "type": "publicKey"
         }
       ]
     },
     {
-      "name": "initializeUser",
+      "name": "check_user_exists",
+      "discriminator": [
+        173,
+        195,
+        153,
+        118,
+        39,
+        45,
+        67,
+        58
+      ],
       "accounts": [
         {
-          "name": "userAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "userPubkey",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "serviceWallet",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "state",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false,
-          "docs": [
-            "System program is required for creating accounts"
-          ]
+          "name": "user"
         }
       ],
       "args": []
     },
     {
-      "name": "initializeUserWithReferrer",
-      "accounts": [
-        {
-          "name": "userAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "referrerAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "userPubkey",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "referrer",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "serviceWallet",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "state",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
+      "name": "execute_transaction",
+      "discriminator": [
+        231,
+        173,
+        49,
+        91,
+        235,
+        24,
+        68,
+        19
       ],
-      "args": []
-    },
-    {
-      "name": "checkUserExists",
-      "accounts": [
-        {
-          "name": "user",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": []
-    },
-    {
-      "name": "initializeMerchant",
-      "accounts": [
-        {
-          "name": "merchantAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "userAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "userPubkey",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "serviceWallet",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "state",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "nftIdentifier",
-          "type": {
-            "defined": "CnftIdentifier"
-          }
-        }
-      ]
-    },
-    {
-      "name": "initializeMerchantWithReferrer",
-      "accounts": [
-        {
-          "name": "merchantAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "userAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "userPubkey",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "serviceWallet",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "state",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "referrerAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "referrer",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "nftIdentifier",
-          "type": {
-            "defined": "CnftIdentifier"
-          }
-        }
-      ]
-    },
-    {
-      "name": "executeTransaction",
       "accounts": [
         {
           "name": "sender",
-          "isMut": true,
-          "isSigner": true
+          "writable": true,
+          "signer": true
         },
         {
-          "name": "senderUsdcAccount",
-          "isMut": true,
-          "isSigner": false
+          "name": "sender_usdc_account",
+          "writable": true
         },
         {
-          "name": "receiverUsdcAccount",
-          "isMut": true,
-          "isSigner": false
+          "name": "receiver_usdc_account",
+          "writable": true
         },
         {
-          "name": "daoUsdcAccount",
-          "isMut": true,
-          "isSigner": false
+          "name": "dao_usdc_account",
+          "writable": true
         },
         {
           "name": "state",
-          "isMut": true,
-          "isSigner": false
+          "writable": true
         },
         {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
         },
         {
-          "name": "senderUserAccount",
-          "isMut": true,
-          "isSigner": false
+          "name": "sender_user_account",
+          "writable": true
         },
         {
-          "name": "receiverUserAccount",
-          "isMut": true,
-          "isSigner": false
+          "name": "receiver_user_account",
+          "writable": true
         }
       ],
       "args": [
@@ -286,151 +123,382 @@
       ]
     },
     {
-      "name": "addRating",
+      "name": "initialize",
+      "discriminator": [
+        175,
+        175,
+        109,
+        31,
+        13,
+        152,
+        155,
+        237
+      ],
       "accounts": [
         {
-          "name": "merchant",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
           "name": "state",
-          "isMut": true,
-          "isSigner": false
+          "writable": true,
+          "signer": true
         },
         {
-          "name": "signer",
-          "isMut": true,
-          "isSigner": true
+          "name": "user",
+          "writable": true,
+          "signer": true
         },
         {
-          "name": "reviewer",
-          "isMut": true,
-          "isSigner": false
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
         {
-          "name": "rating",
+          "name": "usdc_mint",
+          "type": "pubkey"
+        },
+        {
+          "name": "transaction_fee_percentage",
           "type": "u8"
+        },
+        {
+          "name": "dao_pubkey",
+          "type": "pubkey"
+        },
+        {
+          "name": "onboarding_service_wallet_pubkey",
+          "type": "pubkey"
+        },
+        {
+          "name": "merchant_id_service_wallet_pubkey",
+          "type": "pubkey"
+        },
+        {
+          "name": "transaction_service_wallet_pubkey",
+          "type": "pubkey"
+        },
+        {
+          "name": "review_service_wallet_pubkey",
+          "type": "pubkey"
         }
       ]
+    },
+    {
+      "name": "initialize_merchant",
+      "discriminator": [
+        7,
+        90,
+        74,
+        38,
+        99,
+        111,
+        142,
+        77
+      ],
+      "accounts": [
+        {
+          "name": "merchant_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  101,
+                  114,
+                  99,
+                  104,
+                  97,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user_pubkey"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_account",
+          "writable": true
+        },
+        {
+          "name": "user_pubkey"
+        },
+        {
+          "name": "service_wallet",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "state",
+          "writable": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "nft_identifier",
+          "type": {
+            "defined": {
+              "name": "CnftIdentifier"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "initialize_merchant_with_referrer",
+      "discriminator": [
+        247,
+        231,
+        64,
+        66,
+        86,
+        196,
+        61,
+        168
+      ],
+      "accounts": [
+        {
+          "name": "merchant_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  101,
+                  114,
+                  99,
+                  104,
+                  97,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user_pubkey"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_account",
+          "writable": true
+        },
+        {
+          "name": "user_pubkey"
+        },
+        {
+          "name": "service_wallet",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "state",
+          "writable": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "referrer_account",
+          "writable": true
+        },
+        {
+          "name": "referrer"
+        }
+      ],
+      "args": [
+        {
+          "name": "nft_identifier",
+          "type": {
+            "defined": {
+              "name": "CnftIdentifier"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "initialize_user",
+      "discriminator": [
+        111,
+        17,
+        185,
+        250,
+        60,
+        122,
+        38,
+        254
+      ],
+      "accounts": [
+        {
+          "name": "user_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user_pubkey"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_pubkey"
+        },
+        {
+          "name": "service_wallet",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "state"
+        },
+        {
+          "name": "system_program",
+          "docs": [
+            "System program is required for creating accounts"
+          ],
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initialize_user_with_referrer",
+      "discriminator": [
+        205,
+        153,
+        70,
+        180,
+        11,
+        233,
+        167,
+        216
+      ],
+      "accounts": [
+        {
+          "name": "user_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user_pubkey"
+              }
+            ]
+          }
+        },
+        {
+          "name": "referrer_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "referrer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_pubkey"
+        },
+        {
+          "name": "referrer"
+        },
+        {
+          "name": "service_wallet",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "state"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
     }
   ],
   "accounts": [
     {
       "name": "Merchant",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "isInitialized",
-            "type": "bool"
-          },
-          {
-            "name": "nftIdentifier",
-            "type": {
-              "defined": "CnftIdentifier"
-            }
-          },
-          {
-            "name": "userPubkey",
-            "type": "publicKey"
-          },
-          {
-            "name": "ratings",
-            "type": "bytes"
-          }
-        ]
-      }
-    },
-    {
-      "name": "User",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "isInitialized",
-            "type": "bool"
-          },
-          {
-            "name": "isMerchant",
-            "type": "bool"
-          },
-          {
-            "name": "expPoints",
-            "type": "u32"
-          },
-          {
-            "name": "usdcAccount",
-            "type": "publicKey"
-          },
-          {
-            "name": "referrer",
-            "type": {
-              "option": "publicKey"
-            }
-          }
-        ]
-      }
+      "discriminator": [
+        71,
+        235,
+        30,
+        40,
+        231,
+        21,
+        32,
+        64
+      ]
     },
     {
       "name": "ProgramState",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "usdcMint",
-            "type": "publicKey"
-          },
-          {
-            "name": "transactionFeePercentage",
-            "type": "u8"
-          },
-          {
-            "name": "daoPubkey",
-            "type": "publicKey"
-          },
-          {
-            "name": "onboardingServiceWalletPubkey",
-            "type": "publicKey"
-          },
-          {
-            "name": "merchantIdServiceWalletPubkey",
-            "type": "publicKey"
-          },
-          {
-            "name": "transactionServiceWalletPubkey",
-            "type": "publicKey"
-          },
-          {
-            "name": "reviewServiceWalletPubkey",
-            "type": "publicKey"
-          },
-          {
-            "name": "merchantCounter",
-            "type": "u32"
-          }
-        ]
-      }
-    }
-  ],
-  "types": [
+      "discriminator": [
+        77,
+        209,
+        137,
+        229,
+        149,
+        67,
+        167,
+        230
+      ]
+    },
     {
-      "name": "CnftIdentifier",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "merkleTreeAddress",
-            "type": "publicKey"
-          },
-          {
-            "name": "leafIndex",
-            "type": "u32"
-          }
-        ]
-      }
+      "name": "User",
+      "discriminator": [
+        159,
+        117,
+        95,
+        227,
+        239,
+        151,
+        58,
+        236
+      ]
     }
   ],
   "errors": [
@@ -480,10 +548,120 @@
       "msg": "Unauthorized."
     }
   ],
-  "metadata": {
-    "address": "6gVqqXEwoTX7AZTBYQDEaXntMiBPnTAyBbuMCeqk5avi",
-    "origin": "anchor",
-    "binaryVersion": "0.29.0",
-    "libVersion": "0.29.0"
-  }
+  "types": [
+    {
+      "name": "CnftIdentifier",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "merkle_tree_address",
+            "type": "pubkey"
+          },
+          {
+            "name": "leaf_index",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Merchant",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "is_initialized",
+            "type": "bool"
+          },
+          {
+            "name": "nft_identifier",
+            "type": {
+              "defined": {
+                "name": "CnftIdentifier"
+              }
+            }
+          },
+          {
+            "name": "user_pubkey",
+            "type": "pubkey"
+          },
+          {
+            "name": "ratings",
+            "type": "bytes"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ProgramState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "usdc_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "transaction_fee_percentage",
+            "type": "u8"
+          },
+          {
+            "name": "dao_pubkey",
+            "type": "pubkey"
+          },
+          {
+            "name": "onboarding_service_wallet_pubkey",
+            "type": "pubkey"
+          },
+          {
+            "name": "merchant_id_service_wallet_pubkey",
+            "type": "pubkey"
+          },
+          {
+            "name": "transaction_service_wallet_pubkey",
+            "type": "pubkey"
+          },
+          {
+            "name": "review_service_wallet_pubkey",
+            "type": "pubkey"
+          },
+          {
+            "name": "merchant_counter",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "User",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "is_initialized",
+            "type": "bool"
+          },
+          {
+            "name": "is_merchant",
+            "type": "bool"
+          },
+          {
+            "name": "exp_points",
+            "type": "u32"
+          },
+          {
+            "name": "usdc_account",
+            "type": "pubkey"
+          },
+          {
+            "name": "referrer",
+            "type": {
+              "option": "pubkey"
+            }
+          }
+        ]
+      }
+    }
+  ]
 }
