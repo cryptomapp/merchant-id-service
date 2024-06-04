@@ -12,6 +12,7 @@ import { ProgramState } from "../generated/accounts/ProgramState";
 import { createInitializeMerchantInstruction } from "../generated/instructions/initializeMerchant";
 import {
   CnftIdentifier,
+  Merchant,
   PROGRAM_ID,
   User,
   createInitializeMerchantWithReferrerInstruction,
@@ -212,6 +213,24 @@ export class CryptoMappClient {
     );
 
     return signature;
+  }
+
+  public async fetchUsers(): Promise<number> {
+    const userGpaBuilder = User.gpaBuilder(this.programId);
+    userGpaBuilder.addFilter("isMerchant", false);
+    const nonMerchantUserAccounts = await userGpaBuilder.run(this.connection);
+
+    const merchantUserAccounts = await this.fetchMerchants();
+
+    return nonMerchantUserAccounts.length + merchantUserAccounts;
+  }
+
+  public async fetchMerchants(): Promise<number> {
+    const merchantGpaBuilder = User.gpaBuilder(this.programId);
+    merchantGpaBuilder.addFilter("isMerchant", true);
+    const merchantAccounts = await merchantGpaBuilder.run(this.connection);
+
+    return merchantAccounts.length;
   }
 }
 
